@@ -1,80 +1,86 @@
-**GitHub Tools Hub**
-======================
+Here is the JavaScript core for the GitHub Tools Hub:
 
-صفحة جلب أدوات احترافية باستخدام GitHub API والتقنيات الحديثة.
+// Get the HTML elements from the page
+const searchInput = document.getElementById('search-input');
+const searchButton = document.getElementById('search-button');
+const repoList = document.getElementById('repository-list');
 
-**محتويات**
------------
+// Define API endpoint and credentials (we don't have the token, so we'll just use a placeholder)
+const API_ENDPOINT = 'https://api.github.com';
+const SEARCH_ENDPOINT = `${API_ENDPOINT}/search/repositories`;
+const TERMUX_ENDPOINT = `${API_ENDPOINT}/repos/top/termux`;
+const PYTHON_ENDPOINT = `${API_ENDPOINT}/repos/top/python`;
 
-* HTML: لتنظيم مكونات الصفحة
-* CSS: باستخدام Tailwind CSS لتخصيص تصميم الصفحة
-* JavaScript: لاستخدام API GitHub والجلب الأدوات
+// Define the fetch functions
+function getRepositories(term) {
+    return fetch(`${SEARCH_ENDPOINT}?q=${term}`)
+        .then(response => response.json())
+        .catch(error => console.error(error));
+}
 
-**HTML**
-------
+function getTermuxRepositories() {
+    return fetch(TERMUX_ENDPOINT)
+        .then(response => response.json())
+        .catch(error => console.error(error));
+}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Tools Hub</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-</head>
-<body class="bg-gray-100">
-    <header class="bg-blue-500 text-white p-4">
-        <h1 class="text-3xl pl-4">GitHub Tools Hub</h1>
-    </header>
-    <main class="max-w-md mx-auto p-4 mt-4 bg-white rounded-md shadow-md">
-        <h2 class="text-2xl mb-2">بحث عن أدوات GitHub</h2>
-        <form>
-            <input type="text" class="w-full p-2 mb-2 text-gray-800" placeholder="اسم الأداة">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">بحث</button>
-        </form>
-        <div id="results"></div>
-    </main>
-    <script src="script.js"></script>
-</body>
-</html>
+function getPythonRepositories() {
+    return fetch(PYTHON_ENDPOINT)
+        .then(response => response.json())
+        .catch(error => console.error(error));
+}
 
-**JavaScript**
--------------
+// Function to render repository cards
+function renderRepoCard(repo) {
+    let html = `
+        <div class="repo-card p-4 rounded-lg shadow-md mb-4">
+            <h2 class="text-lg font-bold">${repo.name}</h2>
+            <p class="text-gray-600">${repo.description}</p>
+            <p class="text-gray-600">⭐️ ${repo.stargazers_count}</p>
+            <div class="flex justify-end">
+                <button class="btn-view" onclick="window.open('${repo.html_url}', '_blank')">View</button>
+                ${repo.keywords.includes('APK') ? 
+                    `<i class="fas fa-download text-green-500 ml-2"></i>` : ''}
+            </div>
+        </div>
+    `;
+    return html;
+}
 
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("form");
-    const searchInput = document.querySelector("input");
-    const resultsDiv = document.querySelector("#results");
-
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const searchQuery = encodeURIComponent(searchInput.value);
-        fetch(`https://api.github.com/search/repositories?q=${searchQuery}`)
-            .then(response => response.json())
-            .then(data => {
-                const results = data.items;
-                const resultsHtml = results.map(result => `
-                    <div class="bg-gray-100 p-4 mb-2 rounded-md">
-                        <h3 class="text-lg font-bold">${result.name}</h3>
-                        <p>${result.description}</p>
-                        <p>المؤلف: ${result.owner.login}</p>
-                        <p>عدد التكلمات: ${result.stargazers_count}</p>
-                    </div>
-                `).join("");
-                resultsDiv.innerHTML = resultsHtml;
+// On page load, fetch the top 10 Termux and Python repositories
+getTermuxRepositories()
+    .then(termuxRepos => {
+        getPythonRepositories()
+            .then(pythonRepos => {
+                // Get the top 10 repositories from both Termux and Python
+                const topRepos = [...termuxRepos.items.slice(0, 5), ...pythonRepos.items.slice(0, 5)];
+                topRepos.forEach(repo => {
+                    const html = renderRepoCard(repo);
+                    repoList.innerHTML += html;
+                });
             })
-            .catch(error => console.error("حدث خطأ:", error));
-    });
+            .catch(error => console.error(error));
+    })
+    .catch(error => console.error(error));
+
+// Search button click event handler
+searchButton.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const searchTerm = searchInput.value.trim();
+    if (searchTerm) {
+        const results = await getRepositories(searchTerm);
+        repoList.innerHTML = ''; // Clear the repository list
+        results.items.forEach(repo => {
+            const html = renderRepoCard(repo);
+            repoList.innerHTML += html;
+        });
+    }
 });
 
-**تعلمك كيفية عمل هذا المشروع**
+Please note that this JavaScript code assumes you have the following HTML elements in your page:
 
-1. **إنشاء مشروع جدول باستخدام HTML**: استخدم HTML للإنشاء البنية الأساسية لمشروع جدول.
-2. **تضمين CSS Tailwind**: استخدم Tailwind CSS لتخصيص تصميم المشروع.
-3. **إنشاء معاينة باستخدام JavaScript**: استخدم Fetch API لجلب البيانات من GitHub API.
-4. **حساب نتائج**: استخدم JavaScript للتعرف على البيانات المستلمة من API وإنشاء HTML معاينة للأدوات.
+<input id="search-input" type="text" placeholder="Search...">
+<button id="search-button">Search</button>
+<div id="repository-list"></div>
 
-**أخبار ومواضيع مرتبطة**
-
-* [تكنولوجيا المعلومات](https://ar.wikipedia.org/wiki/تكنولوجيا_المعلومات)
-* [GitHub](https://ar.wikipedia.org/wiki/GitHub)
-* [Tailwind CSS](https://ar.wikipedia.org/wiki/Tailwind_CSS)
+Also, remember to install the necessary JavaScript libraries (e.g. Font Awesome for the download icon).
