@@ -2,62 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Termux Tools</title>
-    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+    <title>GitHub Tools Searcher</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-opacity-20 bg-gray-900 min-h-screen p-4">
-    <h1 class="text-3xl text-center text-white">Termux Tools</h1>
-    <form class="flex justify-center mt-8 bg-white p-4 rounded-md">
-        <input class="border rounded-md w-1/2 h-10 p-2 text-sm focus:outline-none" type="text" placeholder="ابحث عن أدوات ترمكس">
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 rounded-md">بحث</button>
-    </form>
-    <div class="w-full h-screen mt-8 p-4 overflow-y-scroll">
-        <div class="w-full h-auto p-4 rounded-md bg-white shadow-md">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 rounded-md" id="fetchData">أرجع البيانات</button>
-            <div id="data" class="h-auto p-4 overflow-y-scroll"></div>
-        </div>
+<body>
+    <div class="max-w-6xl mx-auto pt-4">
+        <h1 class="text-3xl font-bold mb-4">GitHub Tools Searcher</h1>
+        <input class="block p-2 border border-gray-300 rounded-md w-full" type="text" id="search" placeholder="Search for tools...">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md ml-2" id="search-btn">Search</button>
+        <div class="mt-8" id="tools-container"></div>
     </div>
+
     <script>
-        fetch('https://api.github.com/search/repositories?q=termux')
-        .then(response => response.json())
-        .then(data => {
-            const dataList = document.getElementById('data');
-            const repositories = data.items;
-            repositories.forEach(repository => {
-                const repoElement = document.createElement('div');
-                repoElement.innerHTML = `
-                    <h2 class="text-lg text-gray-900">${repository.full_name}</h2>
-                    <p class="text-sm text-gray-600">${repository.description}</p>
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 rounded-md">فتح</button>
-                `;
-                dataList.appendChild(repoElement);
-            });
-        })
-        .catch(error => console.error(error));
-    </script>
-    <script>
-        const fetchDataButton = document.getElementById('fetchData');
-        fetchDataButton.addEventListener('click', () => {
-            fetch('https://api.github.com/search/repositories?q=termux')
-            .then(response => response.json())
-            .then(data => {
-                const dataList = document.getElementById('data');
-                while (dataList.firstChild) {
-                    dataList.removeChild(dataList.firstChild);
-                }
-                const repositories = data.items;
-                repositories.forEach(repository => {
-                    const repoElement = document.createElement('div');
-                    repoElement.innerHTML = `
-                        <h2 class="text-lg text-gray-900">${repository.full_name}</h2>
-                        <p class="text-sm text-gray-600">${repository.description}</p>
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 rounded-md">فتح</button>
-                    `;
-                    dataList.appendChild(repoElement);
-                });
-            })
-            .catch(error => console.error(error));
+        const searchInput = document.getElementById('search');
+        const searchBtn = document.getElementById('search-btn');
+        const toolsContainer = document.getElementById('tools-container');
+
+        searchBtn.addEventListener('click', () => {
+            const searchTerm = searchInput.value;
+            if (searchTerm.trim() !== '') {
+                fetch(`https://api.github.com/search/repositories?q=${searchTerm}&sort=stars&order=desc`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const tools = data.items;
+                        const toolCardsHtml = tools.map(tool => {
+                            return `
+                                <div class="bg-white rounded-md p-4 shadow-md mb-4">
+                                    <h2 class="font-bold text-xl">${tool.name}</h2>
+                                    <p class="text-gray-600">${tool.description}</p>
+                                    <p class="text-gray-600">Stars: ${tool.stargazers_count}</p>
+                                    <p class="text-gray-600">Forks: ${tool.forks_count}</p>
+                                    <p class="text-gray-600">Language: ${tool.language}</p>
+                                    <p class="text-gray-600">URL: <a href="${tool.html_url}" target="_blank">${tool.html_url}</a></p>
+                                </div>
+                            `;
+                        }).join('');
+                        toolsContainer.innerHTML = toolCardsHtml;
+                    })
+                    .catch(error => console.error(error));
+            }
         });
     </script>
 </body>
