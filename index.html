@@ -3,126 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ GHOST FETCHER ⚡</title>
+    <title>محرك بحث أدوات</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
-        .repo-title {
-            line-height: 1.4;
-            max-height: 80px;
-            overflow: hidden;
+        .repo-card {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .repo-meta {
-            font-size: 0.75rem;
-            color: #666;
-            margin-bottom: 15px;
+        .repo-header {
             display: flex;
-            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
         }
-        .lang-badge {
-            background: #333;
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: var(--primary);
-        }
-        .actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: auto;
-        }
-        .btn-action {
-            padding: 8px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            text-align: center;
-            text-decoration: none;
-            color: white;
+        .repo-title {
+            font-size: 18px;
             font-weight: bold;
         }
-        .btn-git { background: #27ae60; }
-        .btn-zip { background: #2980b9; }
-        .btn-view { grid-column: span 2; background: #444; }
-        .loading {
-            text-align: center;
-            width: 100%;
-            padding: 50px;
-            font-size: 1.2rem;
-            color: var(--primary);
+        .repo-stars {
+            font-size: 16px;
+            color: #ffd700;
+        }
+        .repo-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .lang-badge {
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        .repo-desc {
+            margin-bottom: 20px;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-action {
+            margin-right: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .btn-git {
+            background-color: #333;
+            color: #fff;
+        }
+        .btn-zip {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+        .btn-view {
+            background-color: #03A9F4;
+            color: #fff;
         }
     </style>
 </head>
-<body class="bg-gray-100">
-
-    <header class="bg-gray-800 text-white p-4 text-center">
-        <h1 class="text-3xl mb-2">⚡ GHOST FETCHER ⚡</h1>
-        <p class="text-lg">نظام جلب وسحب جميع الأدوات والمكاتب والثغرات - مباشر</p>
+<body>
+    <header class="bg-gray-900 text-white p-4 text-center">
+        <h1 class="text-3xl font-bold">محرك بحث أدوات</h1>
     </header>
-
-    <div class="controls flex justify-center mt-4">
-        <input type="text" id="searchBox" placeholder="اكتب اسم أداة أو ثغرة (مثلاً: Wifi, DDOS)..." class="p-2 pl-10 text-gray-700 border border-gray-300 rounded-md">
-        <button class="main-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2" onclick="manualSearch()">بحث يدوي</button>
-    </div>
-
-    <div class="categories-grid flex justify-center mt-4" id="catGrid">
-    </div>
-
-    <h3 id="statusText" class="text-gray-600 text-lg mx-4 mt-4">النتائج: 0</h3>
-    
-    <div id="results" class="mx-4 mt-4"></div>
-
+    <main class="container mx-auto p-4 mt-4">
+        <input type="search" id="search-input" class="w-full p-4 pl-10 text-sm text-gray-700" placeholder="ابحث عن أدوات...">
+        <button id="search-button" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">بحث</button>
+        <div id="statusText" class="text-gray-600 text-center mt-4"></div>
+        <div id="results" class="mt-4"></div>
+    </main>
     <script>
-        const topics = {
-            '🔥 الكل': 'hacking+security+tools',
-            '🤖 أندرويد': 'android+pentest+termux+adb+root',
-            '🍎 آيفون': 'ios+jailbreak+forensics+security',
-            '🐍 بايثون': 'python+exploit+scapy+script',
-            '🌐 ويب': 'web-security+sqli+xss+scanner+burp',
-            '📡 شبكات': 'network+wifi+aircrack+nmap+bettercap',
-            '💻 ويندوز': 'windows+privilege-escalation+powershell+rat',
-            '🐧 لينكس': 'linux+kernel+exploit+bash+script',
-            '🕵️ OSINT': 'osint+sherlock+information-gathering',
-            '🐛 ثغرات': 'cve+exploit-db+poc+zero-day',
-            '🔐 تشفير': 'cryptography+ransomware+decryption+hashcat',
-            '☁️ سحابي': 'cloud-security+aws+azure+docker',
-            '🎣 تصيد': 'phishing+social-engineering+tool',
-            '🛠️ مختبرات': 'vulnerable-lab+ctf+metasploitable'
-        };
+        // الدالة الرئيسية للجلب
+        async function fetchFromGithub(query) {
+            const container = document.getElementById('results');
+            const status = document.getElementById('statusText');
+            
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> جاري سحب البيانات من السيرفرات...</div>';
+            
+            try {
+                // استخدام API GitHub العام
+                // sort=stars: لجلب الأدوات الأكثر شهرة وموثوقية
+                const url = `https://api.github.com/search/repositories?q=${query}&sort=stars&order=desc&per_page=40`;
+                
+                const response = await fetch(url);
+                
+                // التعامل مع الأخطاء (مثل الحظر المؤقت)
+                if (response.status === 403) {
+                    throw new Error("⚠️ تم تجاوز حد البحث المسموح به لليوم. حاول مرة أخرى لاحقاً أو استخدم VPN.");
+                }
+                if (!response.ok) {
+                    throw new Error("حدث خطأ في الاتصال بالسيرفر.");
+                }
 
-        window.onload = function() {
-            renderCategories();
-            fetchFromGithub(topics['🔥 الكل']); 
-        };
+                const data = await response.json();
+                
+                // تحديث الواجهة
+                status.innerText = `تم العثور على ${data.total_count} أداة (يتم عرض أفضل 40)`;
+                container.innerHTML = ""; // مسح التحميل
 
-        function renderCategories() {
-            const grid = document.getElementById('catGrid');
-            for (const [name, query] of Object.entries(topics)) {
-                const btn = document.createElement('div');
-                btn.className = 'cat-tag bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mx-2';
-                btn.innerText = name;
-                btn.onclick = function() {
-                    document.querySelectorAll('.cat-tag').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    fetchFromGithub(query);
-                };
-                grid.appendChild(btn);
+                if (data.items.length === 0) {
+                    container.innerHTML = "<p style='text-align:center'>لم يتم العثور على أدوات مطابقة.</p>";
+                    return;
+                }
+
+                // رسم الكروت
+                data.items.forEach(repo => {
+                    createCard(repo, container);
+                });
+
+            } catch (error) {
+                container.innerHTML = `<div style="text-align:center; color:red; width:100%">
+                    <h3>🚫 توقف النظام</h3>
+                    <p>${error.message}</p>
+                </div>`;
             }
         }
 
-        function manualSearch() {
-            const val = document.getElementById('searchBox').value;
-            if(val) fetchFromGithub(val);
+        function createCard(repo, container) {
+            // تجهيز البيانات
+            const desc = repo.description ? repo.description.slice(0, 100) + '...' : 'لا يوجد وصف متاح';
+            const lang = repo.language || 'Code';
+            const size = (repo.size / 1024).toFixed(1) + ' MB';
+            const date = new Date(repo.updated_at).toLocaleDateString();
+
+            // تجهيز الأوامر
+            const cloneCmd = `git clone ${repo.html_url}`;
+            const zipUrl = `${repo.html_url}/archive/refs/heads/master.zip`;
+
+            const cardHTML = 
+                `<div class="repo-card">
+                    <div class="repo-header">
+                        <span class="repo-title">${repo.name}</span>
+                        <span class="repo-stars">⭐ ${(repo.stargazers_count/1000).toFixed(1)}k</span>
+                    </div>
+                    
+                    <div class="repo-meta">
+                        <span class="lang-badge">${lang}</span>
+                        <span>📅 ${date}</span>
+                    </div>
+
+                    <p class="repo-desc">${desc}</p>
+
+                    <div class="actions">
+                        <button class="btn-action btn-git" onclick="copyText('${cloneCmd}')">
+                            <i class="fas fa-copy"></i> نسخ التثبيت
+                        </button>
+                        <a href="${zipUrl}" class="btn-action btn-zip">
+                            <i class="fas fa-download"></i> تحميل
+                        </a>
+                        <a href="${repo.html_url}" target="_blank" class="btn-action btn-view">
+                            عرض المصدر على GitHub <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>`
+            ;
+            
+            container.insertAdjacentHTML('beforeend', cardHTML);
         }
 
-        function fetchFromGithub(query) {
-            const results = document.getElementById('results');
-            results.innerHTML = '';
-            const statusText = document.getElementById('statusText');
-            statusText.innerText = 'النتائج: 0';
-            // TO DO: fetch from github and render results
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("تم نسخ الأمر بنجاح");
+            });
         }
+
+        document.getElementById('search-button').addEventListener('click', () => {
+            const query = document.getElementById('search-input').value.trim();
+            if (query) {
+                fetchFromGithub(query);
+            }
+        });
     </script>
 </body>
 </html>
