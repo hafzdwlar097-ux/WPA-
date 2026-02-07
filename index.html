@@ -1,16 +1,74 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحة الترحيب</title>
+    <title>Ibrahim Source</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/lucide@1.5.4/dist/lucide.min.css" rel="stylesheet">
 </head>
-<body class="h-screen flex justify-center items-center bg-gray-100">
-    <div class="text-center">
-        <h1 class="text-5xl font-bold mb-4">مرحباً بك!</h1>
-        <p class="text-2xl mb-8">欢迎 إلى صفحة الترحيب</p>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">探索</button>
-    </div>
+<body class="dark:bg-gray-900">
+    <header class="bg-gray-800 py-4 text-white">
+        <nav class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-lg font-bold">Ibrahim Source</a>
+            <div class="flex items-center">
+                <button class="bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded-md">
+                    <i class="fi fi-br-search text-lg mr-2"></i> Search
+                </button>
+            </div>
+        </nav>
+    </header>
+    <main class="flex flex-col md:flex-row">
+        <aside class="bg-gray-700 py-4 md:w-1/4 lg:w-1/5 xl:w-1/6 text-white">
+            <ul class="space-y-2">
+                <li><a href="#" class="block py-2 pl-4 hover:bg-gray-600">Tools</a></li>
+                <li><a href="#" class="block py-2 pl-4 hover:bg-gray-600">Libraries</a></li>
+                <li><a href="#" class="block py-2 pl-4 hover:bg-gray-600">Uploads</a></li>
+                <li><a href="#" class="block py-2 pl-4 hover:bg-gray-600">Downloads</a></li>
+            </ul>
+        </aside>
+        <section class="flex-1 py-4 md:px-4 lg:px-6 xl:px-8">
+            <h2 class="text-lg font-bold mb-4">Programming Libraries</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-white rounded-md shadow-md p-4">
+                    <h3 class="text-lg font-bold mb-2">Flutter</h3>
+                    <p class="text-gray-600">A popular mobile app development framework.</p>
+                    <button class="bg-orange-500 hover:bg-orange-600 py-2 px-4 rounded-md text-white mt-2">
+                        Download
+                    </button>
+                </div>
+                <div class="bg-white rounded-md shadow-md p-4">
+                    <h3 class="text-lg font-bold mb-2">Python</h3>
+                    <p class="text-gray-600">A high-level, versatile programming language.</p>
+                    <button class="bg-orange-500 hover:bg-orange-600 py-2 px-4 rounded-md text-white mt-2">
+                        Download
+                    </button>
+                </div>
+                <div class="bg-white rounded-md shadow-md p-4">
+                    <h3 class="text-lg font-bold mb-2">JS</h3>
+                    <p class="text-gray-600">A popular programming language for web development.</p>
+                    <button class="bg-orange-500 hover:bg-orange-600 py-2 px-4 rounded-md text-white mt-2">
+                        Download
+                    </button>
+                </div>
+            </div>
+            <h2 class="text-lg font-bold mt-8 mb-4">Upload Files</h2>
+            <div class="bg-white rounded-md shadow-md p-4">
+                <div class="border-2 border-dashed border-gray-300 rounded-md h-64 flex justify-center items-center">
+                    <i class="fi fi-br-upload-cloud text-lg mr-2 text-gray-600"></i>
+                    <span class="text-gray-600">Drag and drop files here or click to upload</span>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-gray-800 py-4 text-white text-center">
+        <p class="mb-2">&copy; 2023 Ibrahim Source. All rights reserved.</p>
+        <p class="mb-4">Open Source under the MIT License.</p>
+        <ul class="flex justify-center space-x-4 mb-4">
+            <li><a href="#" class="text-lg"><i class="fi fi-br-github text-lg"></i></a></li>
+            <li><a href="#" class="text-lg"><i class="fi fi-br-twitter text-lg"></i></a></li>
+            <li><a href="#" class="text-lg"><i class="fi fi-br-linkedin text-lg"></i></a></li>
+        </ul>
+    </footer>
 </body>
 </html>
