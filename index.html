@@ -1,99 +1,81 @@
-<!DOCTYPE html>
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مستودعات جيت هاب</title>
+    <title>الأدوات</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" rel="stylesheet">
 </head>
-<body class="h-screen bg-gray-100 font-body">
-    <div class="splash-screen fixed top-0 left-0 w-full h-full bg-gray-500 flex justify-center items-center text-white" id="splash-screen">
-        <div class="progress-bar h-1 bg-gray-200 rounded-full">
-            <div class="progress h-1 bg-blue-500 rounded-full" id="progress" style="width: 0%;"></div>
-        </div>
+<body class="flex flex-col items-center justify-center h-screen bg-gray-100">
+    <div class="welcome-overlay fixed top-0 left-0 w-full h-full bg-gray-800 opacity-100 flex flex-col items-center justify-center text-white" id="welcome-overlay">
+        <h1 class="text-5xl font-bold mb-4">مكتبة الأدوات</h1>
+        <p class="text-2xl mb-8">ابحث عن الأدوات المهمة</p>
     </div>
-    <header class="bg-white shadow-sm py-4">
-        <nav class="container mx-auto flex justify-center">
-            <button class="filter-btn mx-2 py-2 px-4 rounded-lg bg-gray-200 hover:bg-gray-300">أنظمة حماية</button>
-            <button class="filter-btn mx-2 py-2 px-4 rounded-lg bg-gray-200 hover:bg-gray-300">مكتبات</button>
-            <button class="filter-btn mx-2 py-2 px-4 rounded-lg bg-gray-200 hover:bg-gray-300">تطبيقات</button>
-            <button class="filter-btn mx-2 py-2 px-4 rounded-lg bg-gray-200 hover:bg-gray-300">لغات عالمية</button>
-            <button class="filter-btn mx-2 py-2 px-4 rounded-lg bg-gray-200 hover:bg-gray-300">اختراق المواقع</button>
-            <button class="filter-btn mx-2 py-2 px-4 rounded-lg bg-gray-200 hover:bg-gray-300">Cloud أدوات</button>
-            <button class="filter-btn mx-2 py-2 px-4 rounded-lg bg-gray-200 hover:bg-gray-300">برامج ويندوز</button>
-            <input type="text" id="mainSearchInput" class="ml-4 w-64 py-2 pl-10 text-sm text-gray-700 rounded-lg bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="البحث...">
-        </nav>
-    </header>
-    <main class="container mx-auto p-4 mt-4">
-        <div class="results-grid" id="resultsContainer"></div>
-    </main>
+    <div class="container mx-auto p-4 pt-6 md:p-6 lg:p-12 xl:p-24">
+        <div class="flex flex-wrap justify-center mb-4">
+            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">الشبكات</button>
+            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">أنظمة حماية</button>
+            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">الهندسة العكسية</button>
+            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">الذكاء الاصطناعي</button>
+            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">أدوات عالمية</button>
+            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">مكتبات</button>
+            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">Cloud أدوات</button>
+            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">برامج ويندوز</button>
+            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">اختراق المواقع</button>
+        </div>
+        <div class="flex justify-center mb-4">
+            <input id="mainSearchInput" type="text" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" placeholder="ابحث عن أداة">
+        </div>
+        <div id="catGroup" class="results-area mb-4" id="resultsBox"></div>
+    </div>
     <script>
-        // --- 2. البرمجة والربط (JavaScript) ---
-
-        // إخفاء شاشة الترحيب
+        // إخفاء الترحيب
         window.onload = () => {
-            document.getElementById('progress').style.width = '100%';
             setTimeout(() => {
-                document.getElementById('splash-screen').style.opacity = '0';
-                setTimeout(() => document.getElementById('splash-screen').remove(), 500);
+                document.getElementById('welcome-overlay').style.opacity = '0';
+                setTimeout(() => document.getElementById('welcome-overlay').remove(), 500);
             }, 2000);
-            // جلب بيانات افتراضية عند البدء
-            globalSearch('hacking-tools');
+            search('hacking'); // جلب بيانات أولية
         };
 
-        const API_URL = "https://api.github.com/search/repositories?q=";
+        const API = "https://api.github.com/search/repositories?q=";
 
-        async function globalSearch(query) {
-            const container = document.getElementById('resultsContainer');
-            container.innerHTML = '<p style="text-align:center; width:100%;">جاري استخراج البيانات من المستودعات العالمية...</p>';
+        async function search(query) {
+            const box = document.getElementById('resultsBox');
+            box.innerHTML = '<p style="text-align:center; width:100%;">جاري استخراج البيانات...</p>';
 
             try {
-                // جلب 100 نتيجة شاملة
-                const response = await fetch(`${API_URL}${encodeURIComponent(query)}&per_page=100`);
-                const data = await response.json();
-
-                container.innerHTML = "";
-                if (!data.items || data.items.length === 0) {
-                    container.innerHTML = "<p>لم يتم العثور على نتائج للبحث: " + query + "</p>";
-                    return;
-                }
+                const res = await fetch(`${API}${encodeURIComponent(query)}&per_page=100`);
+                const data = await res.json();
+                box.innerHTML = "";
 
                 data.items.forEach(repo => {
-                    const downloadUrl = `${repo.html_url}/archive/refs/heads/${repo.default_branch}.zip`;
-                    const card = 
-                        `<div class="tool-card shadow-sm rounded-lg p-4 bg-white mb-4">
+                    const zip = `${repo.html_url}/archive/refs/heads/${repo.default_branch}.zip`;
+                    box.innerHTML += 
+                        `<div class="tool-card bg-white rounded shadow-md p-4 mb-4">
                             <h3>${repo.name}</h3>
-                            <p>${repo.description ? repo.description.substring(0, 100) : 'أداة احترافية من قاعدة بيانات جيت هاب'}</p>
-                            <div class="card-footer flex justify-between">
-                                <span class="lang-badge bg-gray-200 py-1 px-2 rounded-lg text-gray-600">${repo.language || 'Global'}</span>
-                                <a href="${downloadUrl}" class="download-btn bg-blue-500 py-1 px-2 rounded-lg text-white hover:bg-blue-700">📥 تحميل ZIP</a>
+                            <p>${repo.description ? repo.description.substring(0, 90) + '...' : 'أداة احترافية من النظام العالمي.'}</p>
+                            <div class="card-actions">
+                                <span class="lang-label">${repo.language || 'Global'}</span>
+                                <a href="${zip}" class="dl-zip text-blue-600 hover:text-blue-800">تحميل ZIP <i class="fas fa-download"></i></a>
                             </div>
                         </div>`
                     ;
-                    container.innerHTML += card;
                 });
-            } catch (error) {
-                container.innerHTML = "<p>خطأ في الاتصال بالسيرفر.</p>";
+            } catch (e) {
+                box.innerHTML = "<p>تعذر جلب البيانات. حاول مرة أخرى.</p>";
             }
         }
 
-        // تفعيل البحث عند الضغط على Enter
-        document.getElementById('mainSearchInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') globalSearch(e.target.value);
-        });
+        // ربط البحث
+        document.getElementById('mainSearchInput').onkeypress = (e) => {
+            if(e.key === 'Enter') search(e.target.value);
+        };
 
-        // تفعيل الأزرار
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const category = btn.innerText;
-                // إضافة كلمات بحث تقنية لضمان دقة النتائج
-                const searchQuery = category === 'أندرويد' ? 'android hacking' : 
-                                  category === 'بايثون' ? 'python exploit' : 
-                                  category + ' tools';
-                globalSearch(searchQuery);
-            });
-        });
+        // ربط الأزرار
+        document.getElementById('catGroup').onclick = (e) => {
+            if(e.target.classList.contains('cat-btn')) search(e.target.innerText + " hacking");
+        };
     </script>
 </body>
 </html>
