@@ -2,72 +2,136 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المكتبة</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide@1.7.1/dist/lucide.min.css">
+    <title>أدوات التكنولوجيا</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css" rel="stylesheet">
+    <style>
+        .tool-card {
+            border: 1px solid #333;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 8px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
 </head>
-<body dir="rtl" class="bg-gray-100">
-    <header class="bg-white py-4 shadow-md">
-        <nav class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-gray-700">المكتبة</h1>
-            <input type="search" id="searchInput" class="rounded-md py-2 pl-10 text-gray-700 border border-gray-300" placeholder="ابحث...">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                <lucide-search class="mr-2"></lucide-search>
-                بحث
-            </button>
+<body class="bg-gray-900 text-white">
+    <header class="bg-gray-800 py-4">
+        <nav class="container mx-auto flex justify-between">
+            <h1 class="text-3xl font-bold">أدوات التكنولوجيا</h1>
+            <button class="bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded" id="searchBtn">بحث</button>
         </nav>
     </header>
-    <main class="container mx-auto p-4 mt-4">
-        <div class="flex flex-wrap justify-center mb-4">
-            <button class="category-btn bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded mr-2">برمجة</button>
-            <button class="category-btn bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded mr-2">علم البيانات</button>
-            <button class="category-btn bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded mr-2">إدارة الشبكات</button>
-            <button class="category-btn bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded mr-2">حماية المعلومات</button>
+    <main class="container mx-auto p-4">
+        <input type="text" id="searchInput" class="w-full p-2 bg-gray-700 text-white border border-gray-600 rounded" placeholder="ابحث هنا...">
+        <div class="flex flex-wrap justify-center mt-4" id="categories">
+            <button class="category-btn bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded mx-2">الكل</button>
+            <button class="category-btn bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded mx-2">البرمجة</button>
+            <button class="category-btn bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded mx-2">التصميم</button>
+            <button class="category-btn bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded mx-2">التسويق</button>
         </div>
-        <div id="box" class="grid grid-cols-1 gap-4"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4" id="resultsContainer"></div>
     </main>
     <script>
-        const box = document.getElementById('box');
-        const categoryGroup = document.getElementById('categoryGroup');
+        class TitanSearchEngine {
+            constructor() {
+                this.categories = {
+                    "الكل": [],
+                    "البرمجة": [],
+                    "التصميم": [],
+                    "التسويق": []
+                };
+            }
 
-        function runSearch(query) {
-            try {
-                fetch(`https://api.github.com/search/repositories?q=${query}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        box.innerHTML = '';
-                        data.items.forEach(repo => {
-                            const card = `
-                                <div class="card bg-white shadow-md p-4 rounded">
-                                    <h2 class="text-2xl font-bold text-gray-700">${repo.name}</h2>
-                                    <p class="text-gray-600">${repo.description}</p>
-                                    <div class="card-footer">
-                                        <span class="lang-tag">${repo.language || 'Multi'}</span>
-                                        <a href="${repo.html_url}/archive/refs/heads/main.zip" class="download-zip">تحميل ZIP</a>
-                                    </div>
-                                </div>
-                            `;
-                            box.insertAdjacentHTML('beforeend', card);
-                        });
-                    });
-            } catch (err) {
-                box.innerHTML = '<p class="text-center">خطأ في الاتصال بالسيرفر.</p>';
+            fetchTools(category) {
+                // Fetch data from API or database
+                const items = [
+                    {
+                        name: "Tool 1",
+                        description: "This is a tool",
+                        html_url: "https://example.com/tool1",
+                        stargazers_count: 1000,
+                        language: "JavaScript",
+                        updated_at: "2022-01-01T00:00:00Z"
+                    },
+                    {
+                        name: "Tool 2",
+                        description: "This is another tool",
+                        html_url: "https://example.com/tool2",
+                        stargazers_count: 500,
+                        language: "Python",
+                        updated_at: "2022-01-15T00:00:00Z"
+                    }
+                ];
+
+                this.render(items);
+            }
+
+            render(items) {
+                const grid = document.getElementById('resultsContainer');
+                grid.innerHTML = "";
+
+                items.forEach(item => {
+                    const cloneCmd = `git clone ${item.html_url}`;
+                    const zipUrl = `${item.html_url}/archive/refs/heads/master.zip`;
+
+                    const card = `
+                        <div class="tool-card">
+                            <div class="card-header">
+                                <h3>${item.name}</h3>
+                                <span>⭐ ${this.formatNumber(item.stargazers_count)}</span>
+                            </div>
+                            <p>${item.description ? item.description : 'لا يوجد وصف، ولكنها أداة قوية.'}</p>
+                            <div class="meta-info">
+                                <span>🛠️ اللغة: ${item.language || 'Code'}</span>
+                                <span>📅 تحديث: ${new Date(item.updated_at).toLocaleDateString()}</span>
+                            </div>
+                            <div class="action-buttons">
+                                <a href="${item.html_url}" target="_blank">📂 المصدر</a>
+                                <a href="${zipUrl}">💾 تحميل ZIP</a>
+                                <button onclick="TitanSearchEngine.copyToClipboard('${cloneCmd}')">📋 نسخ أمر التثبيت</button>
+                            </div>
+                        </div>
+                    `;
+                    grid.insertAdjacentHTML('beforeend', card);
+                });
+            }
+
+            formatNumber(num) {
+                return num >= 1000 ? (num / 1000).toFixed(1) + 'k' : num;
+            }
+
+            copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert(`تم نسخ الأمر بنجاح:\n${text}\n\nيمكنك لصقه في التيرمينال الآن.`);
+                });
             }
         }
 
-        document.getElementById('searchInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') runSearch(e.target.value);
+        const searchEngine = new TitanSearchEngine();
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('category-btn')) {
+                const category = e.target.innerText;
+                searchEngine.fetchTools(category);
+            }
         });
 
-        const categoryButtons = document.querySelectorAll('.category-btn');
-        categoryButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const finalQuery = button.innerText + " hacking security tools";
-                runSearch(finalQuery);
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    searchEngine.fetchTools(searchInput.value);
+                }
             });
-        });
+        }
     </script>
 </body>
 </html>
