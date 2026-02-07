@@ -1,81 +1,137 @@
+<!DOCTYPE html>
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الأدوات</title>
+    <title>قاعدة بيانات الأنظمة والأدوات العالمية</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/lucide@1.4.0/dist/lucide.min.css" rel="stylesheet">
+    <style>
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            border-top: 1px solid #222;
+            padding-top: 15px;
+        }
+
+        .download-zip {
+            background: #007bff;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+
+        .download-zip:hover { 
+            background: #0056b3; 
+        }
+
+        .lang-tag {
+            font-size: 0.75rem;
+            background: #252525;
+            padding: 5px 12px;
+            border-radius: 5px;
+            color: #aaa;
+        }
+    </style>
 </head>
-<body class="flex flex-col items-center justify-center h-screen bg-gray-100">
-    <div class="welcome-overlay fixed top-0 left-0 w-full h-full bg-gray-800 opacity-100 flex flex-col items-center justify-center text-white" id="welcome-overlay">
-        <h1 class="text-5xl font-bold mb-4">مكتبة الأدوات</h1>
-        <p class="text-2xl mb-8">ابحث عن الأدوات المهمة</p>
+<body>
+
+    <div id="welcome-screen">
+        <div class="matrix-text">ACCESSING ENCRYPTED DATABASE... WELCOME USER</div>
     </div>
-    <div class="container mx-auto p-4 pt-6 md:p-6 lg:p-12 xl:p-24">
-        <div class="flex flex-wrap justify-center mb-4">
-            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">الشبكات</button>
-            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">أنظمة حماية</button>
-            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">الهندسة العكسية</button>
-            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">الذكاء الاصطناعي</button>
-            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">أدوات عالمية</button>
-            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">مكتبات</button>
-            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">Cloud أدوات</button>
-            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">برامج ويندوز</button>
-            <button class="cat-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2 mb-2">اختراق المواقع</button>
-        </div>
-        <div class="flex justify-center mb-4">
-            <input id="mainSearchInput" type="text" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" placeholder="ابحث عن أداة">
-        </div>
-        <div id="catGroup" class="results-area mb-4" id="resultsBox"></div>
+
+    <header>
+        <h1>قاعدة بيانات الأنظمة والأدوات العالمية</h1>
+        <input type="text" id="searchInput" placeholder="ابحث عن أداة، لغة برمجة، أو نظام حماية...">
+    </header>
+
+    <div class="categories-grid" id="categoryGroup">
+        <button class="category-btn">أندرويد</button>
+        <button class="category-btn">بايثون</button>
+        <button class="category-btn">تيرموكس</button>
+        <button class="category-btn">الشبكات</button>
+        <button class="category-btn">أنظمة حماية</button>
+        <button class="category-btn">الهندسة العكسية</button>
+        <button class="category-btn">الذكاء الاصطناعي</button>
+        <button class="category-btn">أدوات عالمية</button>
+        <button class="category-btn">مكتبات</button>
+        <button class="category-btn">Cloud أدوات</button>
+        <button class="category-btn">برامج ويندوز</button>
+        <button class="category-btn">اختراق المواقع</button>
+        <button class="category-btn">لغات عالمية</button>
+        <button class="category-btn">تطبيقات</button>
     </div>
+
+    <div class="results-container" id="resultsBox">
+    </div>
+
     <script>
-        // إخفاء الترحيب
-        window.onload = () => {
+        // --- محرك البحث والربط (JS) ---
+
+        // 1. التعامل مع شاشة الترحيب
+        window.addEventListener('load', () => {
             setTimeout(() => {
-                document.getElementById('welcome-overlay').style.opacity = '0';
-                setTimeout(() => document.getElementById('welcome-overlay').remove(), 500);
-            }, 2000);
-            search('hacking'); // جلب بيانات أولية
-        };
+                const screen = document.getElementById('welcome-screen');
+                screen.style.opacity = '0';
+                setTimeout(() => screen.remove(), 800);
+            }, 3000);
+            // جلب بيانات افتراضية عند التحميل
+            runSearch('hacking-tools');
+        });
 
-        const API = "https://api.github.com/search/repositories?q=";
+        const API_URL = "https://api.github.com/search/repositories?q=";
 
-        async function search(query) {
+        // 2. دالة الجلب والبحث (تغطي كل الأنظمة واللغات)
+        async function runSearch(query) {
             const box = document.getElementById('resultsBox');
-            box.innerHTML = '<p style="text-align:center; width:100%;">جاري استخراج البيانات...</p>';
+            box.innerHTML = '<div style="grid-column: 1/-1; text-align: center;">جاري البحث في الأرشيف العالمي...</div>';
 
             try {
-                const res = await fetch(`${API}${encodeURIComponent(query)}&per_page=100`);
-                const data = await res.json();
+                // جلب 100 نتيجة شاملة بدون شروط نجوم
+                const response = await fetch(`${API_URL}${encodeURIComponent(query)}&per_page=100`);
+                const data = await response.json();
+
                 box.innerHTML = "";
+                if (!data.items || data.items.length === 0) {
+                    box.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">No results found for "${query}"</p>`;
+                    return;
+                }
 
                 data.items.forEach(repo => {
-                    const zip = `${repo.html_url}/archive/refs/heads/${repo.default_branch}.zip`;
-                    box.innerHTML += 
-                        `<div class="tool-card bg-white rounded shadow-md p-4 mb-4">
+                    // رابط التحميل المباشر ZIP
+                    const zipLink = `${repo.html_url}/archive/refs/heads/${repo.default_branch}.zip`;
+                    
+                    const card = `
+                        <div class="tool-card">
                             <h3>${repo.name}</h3>
-                            <p>${repo.description ? repo.description.substring(0, 90) + '...' : 'أداة احترافية من النظام العالمي.'}</p>
-                            <div class="card-actions">
-                                <span class="lang-label">${repo.language || 'Global'}</span>
-                                <a href="${zip}" class="dl-zip text-blue-600 hover:text-blue-800">تحميل ZIP <i class="fas fa-download"></i></a>
+                            <p>${repo.description ? repo.description.substring(0, 110) + '...' : 'أداة أو نظام تم سحبه من قاعدة بيانات جيت هاب العالمية.'}</p>
+                            <div class="card-footer">
+                                <a href="${repo.html_url}" target="_blank" class="download-zip">تحميل (${repo.language})</a>
+                                <span class="lang-tag">${repo.language}</span>
                             </div>
-                        </div>`
-                    ;
+                        </div>
+                    `;
+                    box.innerHTML += card;
                 });
-            } catch (e) {
-                box.innerHTML = "<p>تعذر جلب البيانات. حاول مرة أخرى.</p>";
+            } catch (error) {
+                console.error(error);
             }
         }
 
-        // ربط البحث
-        document.getElementById('mainSearchInput').onkeypress = (e) => {
-            if(e.key === 'Enter') search(e.target.value);
-        };
-
-        // ربط الأزرار
-        document.getElementById('catGroup').onclick = (e) => {
-            if(e.target.classList.contains('cat-btn')) search(e.target.innerText + " hacking");
-        };
+        //بحث عند كتابة في خانة البحث
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            if (query) {
+                runSearch(query);
+            }
+        });
     </script>
 </body>
 </html>
