@@ -1,53 +1,125 @@
+<!DOCTYPE html>
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الصفحة الرئيسية</title>
-    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide@1.7.1/dist/lucide.min.css">
+    <title>Titan Search Engine</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@1.0.0/dist/lucide.min.js"></script>
+    <style>
+        .tool-card {
+            border: 1px solid #333;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 8px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .meta-info {
+            margin-bottom: 10px;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+    </style>
 </head>
-<body dir="rtl">
-    <header class="bg-gray-900 py-4 text-white">
-        <nav class="container mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-bold">الموقع الرئيسي</h1>
-            <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-white">ابحث</button>
-        </nav>
-    </header>
-    <main class="container mx-auto mt-10">
-        <section class="bg-gray-100 p-4 rounded-md shadow-md mb-10">
-            <h2 class="text-2xl font-bold mb-2">أفضل الأدوات</h2>
-            <div id="tools" class="flex flex-wrap justify-center"></div>
-        </section>
-        <section class="bg-gray-100 p-4 rounded-md shadow-md">
-            <h2 class="text-2xl font-bold mb-2">البحث</h2>
-            <input type="text" id="search" class="w-full p-2 rounded-md" placeholder="검색...">
-            <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-white mt-2" onclick="TitanSearchEngine.fetchTools('🏆 أفضل الأدوات')">ابحث</button>
-        </section>
-    </main>
+<body class="bg-gray-900">
+    <div class="container mx-auto p-4 pt-6 mt-10 mb-10">
+        <h1 class="text-3xl text-white mb-4">Titan Search Engine</h1>
+        <input id="searchInput" type="text" placeholder="Search" class="w-full p-4 pl-10 text-sm text-gray-700 rounded-lg focus:ring-gray-500 focus:border-gray-500">
+        <div class="flex flex-wrap justify-center mt-4">
+            <button class="category-btn bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Category 1</button>
+            <button class="category-btn bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mx-2">Category 2</button>
+            <button class="category-btn bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Category 3</button>
+        </div>
+        <div id="resultsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10"></div>
+    </div>
+
     <script>
-        window.onload = () => {
-            TitanSearchEngine.fetchTools('🏆 أفضل الأدوات');
-        };
-        // TitanSearchEngine.fetchTools function should be defined somewhere
-        function TitanSearchEngine() {}
-        TitanSearchEngine.fetchTools = function(query) {
-            fetch(`https://example.com/api/tools?q=${query}`)
-            .then(response => response.json())
-            .then(data => {
-                const toolsContainer = document.getElementById('tools');
-                toolsContainer.innerHTML = '';
-                data.forEach(tool => {
-                    const toolElement = document.createElement('div');
-                    toolElement.className = 'bg-white p-4 rounded-md shadow-md m-2';
-                    toolElement.innerHTML = `
-                        <h3 class="text-xl font-bold mb-2">${tool.name}</h3>
-                        <p class="text-gray-600">${tool.description}</p>
+        class TitanSearchEngine {
+            constructor() {
+                this.categories = {
+                    'Category 1': [],
+                    'Category 2': [],
+                    'Category 3': []
+                }
+            }
+
+            render(items) {
+                const grid = document.getElementById('resultsContainer');
+                grid.innerHTML = "";
+
+                items.forEach(item => {
+                    const cloneCmd = `git clone ${item.html_url}`;
+                    const zipUrl = `${item.html_url}/archive/refs/heads/master.zip`;
+
+                    const card = `
+                        <div class="tool-card">
+                            <div class="card-header">
+                                <h3>${item.name}</h3>
+                                <span>⭐ ${this.formatNumber(item.stargazers_count)}</span>
+                            </div>
+                            <p>${item.description ? item.description : 'لا يوجد وصف، ولكنها أداة قوية.'}</p>
+                            <div class="meta-info">
+                                <span>🛠️ اللغة: ${item.language || 'Code'}</span>
+                                <span>📅 تحديث: ${new Date(item.updated_at).toLocaleDateString()}</span>
+                            </div>
+                            <div class="action-buttons">
+                                <a href="${item.html_url}" target="_blank">📂 المصدر</a>
+                                <a href="${zipUrl}">💾 تحميل ZIP</a>
+                                <button onclick="TitanSearchEngine.copyToClipboard('${cloneCmd}')">📋 نسخ أمر التثبيت</button>
+                            </div>
+                        </div>
                     `;
-                    toolsContainer.appendChild(toolElement);
+                    grid.insertAdjacentHTML('beforeend', card);
                 });
-            })
-            .catch(error => console.error(error));
-        };
+            }
+
+            formatNumber(num) {
+                return num >= 1000 ? (num / 1000).toFixed(1) + 'k' : num;
+            }
+
+            copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert(`تم نسخ الأمر بنجاح:\n${text}\n\nيمكنك لصقه في التيرمينال الآن.`);
+                });
+            }
+
+            fetchTools(category) {
+                // Fetch data from API
+                const items = [
+                    { name: 'Tool 1', html_url: 'https://github.com/user/tool1', stargazers_count: 1000, description: 'This is tool 1', language: 'JavaScript', updated_at: '2022-01-01T00:00:00Z' },
+                    { name: 'Tool 2', html_url: 'https://github.com/user/tool2', stargazers_count: 500, description: 'This is tool 2', language: 'Python', updated_at: '2022-02-01T00:00:00Z' },
+                    { name: 'Tool 3', html_url: 'https://github.com/user/tool3', stargazers_count: 2000, description: 'This is tool 3', language: 'Ruby', updated_at: '2022-03-01T00:00:00Z' }
+                ];
+                this.render(items);
+            }
+        }
+
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const titanSearchEngine = new TitanSearchEngine();
+                    titanSearchEngine.fetchTools(searchInput.value);
+                }
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('category-btn')) {
+                const category = e.target.innerText;
+                const titanSearchEngine = new TitanSearchEngine();
+                titanSearchEngine.fetchTools(category);
+            }
+        });
     </script>
 </body>
 </html>
