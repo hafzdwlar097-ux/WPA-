@@ -1,137 +1,171 @@
-<!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قاعدة بيانات الأنظمة والأدوات العالمية</title>
+    <title>المحرك العالمي للأدوات والأنظمة</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/lucide@1.4.0/dist/lucide.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.4.2/dist/lucide.min.js" integrity="sha256-JdX0XK9W3Z6V+0hT9Kf3Z8m9VZ8JWz8eRtVqkF8f7Q=" crossorigin="anonymous"></script>
     <style>
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            border-top: 1px solid #222;
-            padding-top: 15px;
+        /* --- التصميم العصري (UI/UX) --- */
+        :root {
+            --neon-green: #00ff41;
+            --deep-black: #050505;
+            --card-bg: #121212;
+            --glass-effect: rgba(255, 255, 255, 0.05);
         }
 
-        .download-zip {
-            background: #007bff;
+        body {
+            background-color: var(--deep-black);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* شاشة الترحيب السينمائية */
+        #welcome-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 10000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease-out;
+        }
+
+        .matrix-text {
+            color: var(--neon-green);
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem;
+            text-align: center;
+            border-right: 3px solid var(--neon-green);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: type 3s steps(40, end), blink .7s infinite;
+        }
+
+        @keyframes type { from { width: 0 } to { width: 100% } }
+        @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--neon-green) } }
+
+        /* الهيدر والبحث */
+        header {
+            padding: 50px 20px;
+            background: linear-gradient(180deg, #000, var(--deep-black));
+            text-align: center;
+            border-bottom: 2px solid var(--neon-green);
+        }
+
+        #searchInput {
+            width: 90%; max-width: 700px;
+            padding: 18px 25px;
+            border-radius: 50px;
+            border: 2px solid var(--neon-green);
+            background: rgba(20, 20, 20, 0.9);
             color: white;
-            padding: 8px 18px;
-            border-radius: 30px;
-            text-decoration: none;
+            font-size: 1.2rem;
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+        }
+
+        /* شبكة الأقسام الضخمة */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 12px;
+            padding: 30px 20px;
+            background: #0a0a0a;
+        }
+
+        .category-btn {
+            background: var(--card-bg);
+            border: 1px solid #333;
+            color: #ddd;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .category-btn:hover {
+            background: var(--neon-green);
+            color: black;
             font-weight: bold;
-            font-size: 0.85rem;
-            transition: 0.3s;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--neon-green);
         }
 
-        .download-zip:hover { 
-            background: #0056b3; 
+        /* منطقة النتائج */
+        .results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            padding: 40px 20px;
         }
 
-        .lang-tag {
-            font-size: 0.75rem;
-            background: #252525;
-            padding: 5px 12px;
-            border-radius: 5px;
-            color: #aaa;
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid #222;
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            transition: 0.3s ease;
+            overflow: hidden;
         }
+
+        .tool-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--neon-green);
+        }
+
+        .tool-card:hover {
+            border-color: var(--neon-green);
+            transform: translateY(-8px);
+        }
+
+        .tool-card h3 { color: var(--neon-green); margin: 0 0 12px 0; }
+        .tool-card p { font-size: 0.95rem; color: #bbb; line-height: 1.6; min-height: 60px; }
     </style>
 </head>
 <body>
-
     <div id="welcome-screen">
-        <div class="matrix-text">ACCESSING ENCRYPTED DATABASE... WELCOME USER</div>
+        <h1 class="matrix-text">مرحباً بكم في محرك العالمي للأدوات والأنظمة</h1>
     </div>
-
     <header>
-        <h1>قاعدة بيانات الأنظمة والأدوات العالمية</h1>
-        <input type="text" id="searchInput" placeholder="ابحث عن أداة، لغة برمجة، أو نظام حماية...">
+        <h2>المحرك العالمي للأدوات والأنظمة</h2>
+        <input id="searchInput" type="text" placeholder="ابحث عن أداة أو نظام...">
     </header>
-
-    <div class="categories-grid" id="categoryGroup">
-        <button class="category-btn">أندرويد</button>
-        <button class="category-btn">بايثون</button>
-        <button class="category-btn">تيرموكس</button>
-        <button class="category-btn">الشبكات</button>
-        <button class="category-btn">أنظمة حماية</button>
-        <button class="category-btn">الهندسة العكسية</button>
-        <button class="category-btn">الذكاء الاصطناعي</button>
-        <button class="category-btn">أدوات عالمية</button>
-        <button class="category-btn">مكتبات</button>
-        <button class="category-btn">Cloud أدوات</button>
-        <button class="category-btn">برامج ويندوز</button>
-        <button class="category-btn">اختراق المواقع</button>
-        <button class="category-btn">لغات عالمية</button>
-        <button class="category-btn">تطبيقات</button>
+    <div class="categories-grid">
+        <button class="category-btn">أدوات البرمجة</button>
+        <button class="category-btn">أنظمة التشغيل</button>
+        <button class="category-btn">شبكات وأمان</button>
+        <button class="category-btn">قواعد البيانات</button>
+        <button class="category-btn">تطبيقات ويب</button>
     </div>
-
-    <div class="results-container" id="resultsBox">
+    <div class="results-container">
+        <div class="tool-card">
+            <h3>أداة برمجة 1</h3>
+            <p>هذه أداة برمجة قوية ومجانية...</p>
+        </div>
+        <div class="tool-card">
+            <h3>نظام تشغيل 2</h3>
+            <p>هذا نظام تشغيل سريع وموثوق...</p>
+        </div>
+        <div class="tool-card">
+            <h3>شبكة وأمان 3</h3>
+            <p>هذه شبكة وأمان قوية وفعالة...</p>
+        </div>
+        <div class="tool-card">
+            <h3>قاعدة بيانات 4</h3>
+            <p>هذا قاعدة بيانات كبيرة وموثوقة...</p>
+        </div>
+        <div class="tool-card">
+            <h3>تطبيق ويب 5</h3>
+            <p>هذا تطبيق ويب سريع وفعال...</p>
+        </div>
     </div>
-
     <script>
-        // --- محرك البحث والربط (JS) ---
-
-        // 1. التعامل مع شاشة الترحيب
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const screen = document.getElementById('welcome-screen');
-                screen.style.opacity = '0';
-                setTimeout(() => screen.remove(), 800);
-            }, 3000);
-            // جلب بيانات افتراضية عند التحميل
-            runSearch('hacking-tools');
-        });
-
-        const API_URL = "https://api.github.com/search/repositories?q=";
-
-        // 2. دالة الجلب والبحث (تغطي كل الأنظمة واللغات)
-        async function runSearch(query) {
-            const box = document.getElementById('resultsBox');
-            box.innerHTML = '<div style="grid-column: 1/-1; text-align: center;">جاري البحث في الأرشيف العالمي...</div>';
-
-            try {
-                // جلب 100 نتيجة شاملة بدون شروط نجوم
-                const response = await fetch(`${API_URL}${encodeURIComponent(query)}&per_page=100`);
-                const data = await response.json();
-
-                box.innerHTML = "";
-                if (!data.items || data.items.length === 0) {
-                    box.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">No results found for "${query}"</p>`;
-                    return;
-                }
-
-                data.items.forEach(repo => {
-                    // رابط التحميل المباشر ZIP
-                    const zipLink = `${repo.html_url}/archive/refs/heads/${repo.default_branch}.zip`;
-                    
-                    const card = `
-                        <div class="tool-card">
-                            <h3>${repo.name}</h3>
-                            <p>${repo.description ? repo.description.substring(0, 110) + '...' : 'أداة أو نظام تم سحبه من قاعدة بيانات جيت هاب العالمية.'}</p>
-                            <div class="card-footer">
-                                <a href="${repo.html_url}" target="_blank" class="download-zip">تحميل (${repo.language})</a>
-                                <span class="lang-tag">${repo.language}</span>
-                            </div>
-                        </div>
-                    `;
-                    box.innerHTML += card;
-                });
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
-        //بحث عند كتابة في خانة البحث
-        const searchInput = document.getElementById('searchInput');
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.trim();
-            if (query) {
-                runSearch(query);
-            }
-        });
+        setTimeout(() => {
+            document.getElementById('welcome-screen').style.opacity = 0;
+        }, 3000);
     </script>
 </body>
 </html>
