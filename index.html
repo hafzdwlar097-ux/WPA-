@@ -3,106 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سكربت جلب أدوات الحماية والاختراق الأخلاقي</title>
+    <title>محرك البحث العالمي للأدوات</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/lucide@0.4.4/dist/lucide.js" integrity="sha256-7WZyWq9zJq6X4Zb1Zg5VqT6Uu6TqY9hj9Ri6qT9fFQ" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/lucide@1.6.3/dist/lucide.min.css" rel="stylesheet">
+    <style>
+        .repo-card {
+            background-color: #f7f7f7;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .repo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .star-tag {
+            background-color: #f7dc6f;
+            padding: 5px 10px;
+            border-radius: 10px;
+            color: #333;
+        }
+        .lang-badge {
+            background-color: #3498db;
+            padding: 5px 10px;
+            border-radius: 10px;
+            color: #fff;
+        }
+        .github-link {
+            text-decoration: none;
+            color: #337ab7;
+        }
+        .github-link:hover {
+            color: #23527c;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 h-screen">
-    <header class="bg-white py-4">
-        <nav class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-gray-800">سكربت جلب أدوات الحماية والاختراق الأخلاقي</h1>
-            <button id="search-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">بحث</button>
-        </nav>
+<body class="h-screen bg-gray-100">
+    <header class="bg-blue-500 text-white p-4 text-center">
+        <h1 class="text-3xl font-bold">محرك البحث العالمي للأدوات</h1>
     </header>
-    <main class="container mx-auto p-4 mt-4">
-        <input id="user-input" type="text" class="w-full p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded-md" placeholder="ادخل كلمة البحث">
-        <div class="flex justify-center mt-4">
-            <button data-type="android" class="filter-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded mx-2">أندرويد</button>
-            <button data-type="python" class="filter-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded mx-2">بايثون</button>
-            <button data-type="global" class="filter-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded mx-2">أدوات عالمية</button>
-            <button data-type="lib" class="filter-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded mx-2">مكتبات</button>
-        </div>
-        <div id="display-area" class="mt-4"></div>
-        <form id="submit-repo-form" class="mt-4">
-            <label for="repo-link" class="block text-sm font-medium text-gray-700">إرسال رابط مستودع</label>
-            <input type="text" id="repo-link" class="w-full p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded-md" placeholder="إدخل رابط المستودع">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">إرسال</button>
-        </form>
+    <main class="p-4 flex flex-col items-center">
+        <nav class="flex justify-center mb-4">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GitHubSearchEngine.fetchTools('الكل')">الكل</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GitHubSearchEngine.fetchTools('أندرويد')">أندرويد</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GitHubSearchEngine.fetchTools('بايثون')">بايثون</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GitHubSearchEngine.fetchTools('مكتبات')">مكتبات</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GitHubSearchEngine.fetchTools('أدوات عالمية')">أدوات عالمية</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GitHubSearchEngine.fetchTools('اختراق المواقع')">اختراق المواقع</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GitHubSearchEngine.fetchTools('الشبكات')">الشبكات</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GitHubSearchEngine.fetchTools('تشفير')">تشفير</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GitHubSearchEngine.fetchTools('الهندسة العكسية')">الهندسة العكسية</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GitHubSearchEngine.fetchTools('أنظمة حماية')">أنظمة حماية</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GitHubSearchEngine.fetchTools('برامج ويندوز')">برامج ويندوز</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GitHubSearchEngine.fetchTools('تيرموكس')">تيرموكس</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GitHubSearchEngine.fetchTools('لغات عالمية (C/C++)')">لغات عالمية (C/C++)</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="GitHubSearchEngine.fetchTools('أدوات الـ Cloud')">أدوات الـ Cloud</button>
+        </nav>
+        <div class="results-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="resultsContainer"></div>
     </main>
     <script>
-        const GitHubEngine = {
-            apiBase: "https://api.github.com/search/repositories?q=",
+        const GitHubSearchEngine = {
+            baseUrl: "https://api.github.com/search/repositories?q=",
+            categories: {
+                'الكل': 'hacking+tool+collection',
+                'أندرويد': 'android+hacking+framework+rat+apk',
+                'بايثون': 'python+security+exploit+scripts',
+                'مكتبات': 'security-libraries+awesome-list+api',
+                'أدوات عالمية': 'cybersecurity+best-of+top-tools',
+                'اختراق المواقع': 'web-hacking+sqli+xss+scanner',
+                'الشبكات': 'network-security+nmap+sniffing+wifi',
+                'تشفير': 'cryptography+encryption+decryption+tools',
+                'الهندسة العكسية': 'reverse-engineering+binary+decompiler',
+                'أنظمة حماية': 'ids+ips+firewall+security-hardened',
+                'برامج ويندوز': 'windows-hacking+forensics+tools',
+                'تيرموكس': 'termux+hacking+scripts+tool-kit',
+                'لغات عالمية (C/C++)': 'cpp+c+hacking+exploits',
+                'أدوات الـ Cloud': 'cloud-security+aws+azure+pentest'
+            },
+            async fetchTools(categoryName) {
+                const grid = document.querySelector('.results-grid') || document.getElementById('resultsContainer');
+                grid.innerHTML = `<div style="text-align:center; padding:20px;">جاري تحميل أدوات ${categoryName}...</div>`;
 
-            async searchTools(keyword, type = 'general') {
-                console.log(`Searching for: ${keyword} in category: ${type}`);
+                const query = this.categories[categoryName] || categoryName;
                 
-                let queryModifier = "";
-                if (type === 'android') queryModifier = "+topic:android+hacking";
-                if (type === 'python') queryModifier = "+topic:python+exploit";
-                if (type === 'global') queryModifier = "+topic:cybersecurity+tools";
-                if (type === 'lib') queryModifier = "+topic:library+framework";
-
                 try {
-                    const response = await fetch(`${this.apiBase}${keyword}${queryModifier}&sort=stars`);
+                    const response = await fetch(`${this.baseUrl}${query}&sort=stars&per_page=100`);
                     const data = await response.json();
 
-                    if (!data.items || data.items.length === 0) {
-                        this.showError("No tools found for this search.");
-                        return;
+                    if (data.items && data.items.length > 0) {
+                        this.render(data.items);
+                    } else {
+                        grid.innerHTML = `<p>No tools found for ${categoryName}.</p>`;
                     }
-
-                    this.renderCards(data.items);
-                } catch (error) {
-                    this.showError("Connection error. Please try again.");
+                } catch (e) {
+                    grid.innerHTML = `<p>Error: تأكد من اتصالك بالإنترنت.</p>`;
                 }
             },
+            render(items) {
+                const grid = document.querySelector('.results-grid') || document.getElementById('resultsContainer');
+                grid.innerHTML = ""; 
 
-            renderCards(repos) {
-                const container = document.getElementById('display-area'); 
-                container.innerHTML = ""; 
-
-                repos.forEach(repo => {
+                items.forEach(item => {
                     const card = 
-                        `<div class="tool-card bg-white p-4 rounded shadow-md">
-                            <h3>${repo.name}</h3>
-                            <p>${repo.description ? repo.description.substring(0, 100) : 'No description available'}...</p>
-                            <div class="stats">
-                                <span>⭐ ${repo.stargazers_count}</span>
-                                <span>💻 ${repo.language || 'Multi'}</span>
+                        `<div class="repo-card">
+                            <div class="repo-header">
+                                <h3>${item.name}</h3>
+                                <span class="star-tag">⭐ ${item.stargazers_count}</span>
                             </div>
-                            <a href="${repo.html_url}" target="_blank" class="github-link bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View on GitHub</a>
+                            <p class="repo-desc">${item.description ? item.description.substring(0, 100) : 'لا يوجد وصف متاح'}</p>
+                            <div class="repo-footer">
+                                <span class="lang-badge">${item.language || 'متعدد'}</span>
+                                <a href="${item.html_url}" target="_blank" class="github-link">عرض على GitHub</a>
+                            </div>
                         </div>`
                     ;
-                    container.insertAdjacentHTML('beforeend', card);
+                    grid.insertAdjacentHTML('beforeend', card);
                 });
-            },
-
-            showFeedback(message) {
-                alert(message);
-            },
-
-            showError(msg) {
-                const container = document.getElementById('display-area');
-                container.innerHTML = `<div class="error-box bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">${msg}</div>`;
             }
         };
-
-        document.getElementById('search-btn')?.addEventListener('click', () => {
-            const val = document.getElementById('user-input').value;
-            GitHubEngine.searchTools(val);
-        });
-
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const category = e.target.dataset.type; 
-                GitHubEngine.searchTools(category, category);
-            });
-        });
-
-        document.getElementById('submit-repo-form')?.addEventListener('submit', (e) => {
-            e.preventDefault();
-            GitHubEngine.showFeedback("Thank you! Your repo is under review.");
-        });
     </script>
 </body>
 </html>
