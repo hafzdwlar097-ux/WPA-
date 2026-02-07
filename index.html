@@ -3,123 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titan Search Engine</title>
+    <title>⚡ GHOST FETCHER ⚡</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/lucide@1.0.0/dist/lucide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        .tool-card {
-            border: 1px solid #333;
-            padding: 15px;
-            margin: 10px;
-            border-radius: 8px;
-            background: #1a1a1a;
-            color: #fff;
+        .repo-title {
+            line-height: 1.4;
+            max-height: 80px;
+            overflow: hidden;
         }
-        .card-header {
+        .repo-meta {
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 15px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 10px;
         }
-        .meta-info {
-            margin-bottom: 10px;
+        .lang-badge {
+            background: #333;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--primary);
         }
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: auto;
+        }
+        .btn-action {
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-git { background: #27ae60; }
+        .btn-zip { background: #2980b9; }
+        .btn-view { grid-column: span 2; background: #444; }
+        .loading {
+            text-align: center;
+            width: 100%;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: var(--primary);
         }
     </style>
 </head>
-<body class="bg-gray-900">
-    <div class="container mx-auto p-4 pt-6 mt-10 mb-10">
-        <h1 class="text-3xl text-white mb-4">Titan Search Engine</h1>
-        <input id="searchInput" type="text" placeholder="Search" class="w-full p-4 pl-10 text-sm text-gray-700 rounded-lg focus:ring-gray-500 focus:border-gray-500">
-        <div class="flex flex-wrap justify-center mt-4">
-            <button class="category-btn bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Category 1</button>
-            <button class="category-btn bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mx-2">Category 2</button>
-            <button class="category-btn bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Category 3</button>
-        </div>
-        <div id="resultsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10"></div>
+<body class="bg-gray-100">
+
+    <header class="bg-gray-800 text-white p-4 text-center">
+        <h1 class="text-3xl mb-2">⚡ GHOST FETCHER ⚡</h1>
+        <p class="text-lg">نظام جلب وسحب جميع الأدوات والمكاتب والثغرات - مباشر</p>
+    </header>
+
+    <div class="controls flex justify-center mt-4">
+        <input type="text" id="searchBox" placeholder="اكتب اسم أداة أو ثغرة (مثلاً: Wifi, DDOS)..." class="p-2 pl-10 text-gray-700 border border-gray-300 rounded-md">
+        <button class="main-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2" onclick="manualSearch()">بحث يدوي</button>
     </div>
 
+    <div class="categories-grid flex justify-center mt-4" id="catGrid">
+    </div>
+
+    <h3 id="statusText" class="text-gray-600 text-lg mx-4 mt-4">النتائج: 0</h3>
+    
+    <div id="results" class="mx-4 mt-4"></div>
+
     <script>
-        class TitanSearchEngine {
-            constructor() {
-                this.categories = {
-                    'Category 1': [],
-                    'Category 2': [],
-                    'Category 3': []
-                }
-            }
+        const topics = {
+            '🔥 الكل': 'hacking+security+tools',
+            '🤖 أندرويد': 'android+pentest+termux+adb+root',
+            '🍎 آيفون': 'ios+jailbreak+forensics+security',
+            '🐍 بايثون': 'python+exploit+scapy+script',
+            '🌐 ويب': 'web-security+sqli+xss+scanner+burp',
+            '📡 شبكات': 'network+wifi+aircrack+nmap+bettercap',
+            '💻 ويندوز': 'windows+privilege-escalation+powershell+rat',
+            '🐧 لينكس': 'linux+kernel+exploit+bash+script',
+            '🕵️ OSINT': 'osint+sherlock+information-gathering',
+            '🐛 ثغرات': 'cve+exploit-db+poc+zero-day',
+            '🔐 تشفير': 'cryptography+ransomware+decryption+hashcat',
+            '☁️ سحابي': 'cloud-security+aws+azure+docker',
+            '🎣 تصيد': 'phishing+social-engineering+tool',
+            '🛠️ مختبرات': 'vulnerable-lab+ctf+metasploitable'
+        };
 
-            render(items) {
-                const grid = document.getElementById('resultsContainer');
-                grid.innerHTML = "";
+        window.onload = function() {
+            renderCategories();
+            fetchFromGithub(topics['🔥 الكل']); 
+        };
 
-                items.forEach(item => {
-                    const cloneCmd = `git clone ${item.html_url}`;
-                    const zipUrl = `${item.html_url}/archive/refs/heads/master.zip`;
-
-                    const card = `
-                        <div class="tool-card">
-                            <div class="card-header">
-                                <h3>${item.name}</h3>
-                                <span>⭐ ${this.formatNumber(item.stargazers_count)}</span>
-                            </div>
-                            <p>${item.description ? item.description : 'لا يوجد وصف، ولكنها أداة قوية.'}</p>
-                            <div class="meta-info">
-                                <span>🛠️ اللغة: ${item.language || 'Code'}</span>
-                                <span>📅 تحديث: ${new Date(item.updated_at).toLocaleDateString()}</span>
-                            </div>
-                            <div class="action-buttons">
-                                <a href="${item.html_url}" target="_blank">📂 المصدر</a>
-                                <a href="${zipUrl}">💾 تحميل ZIP</a>
-                                <button onclick="TitanSearchEngine.copyToClipboard('${cloneCmd}')">📋 نسخ أمر التثبيت</button>
-                            </div>
-                        </div>
-                    `;
-                    grid.insertAdjacentHTML('beforeend', card);
-                });
-            }
-
-            formatNumber(num) {
-                return num >= 1000 ? (num / 1000).toFixed(1) + 'k' : num;
-            }
-
-            copyToClipboard(text) {
-                navigator.clipboard.writeText(text).then(() => {
-                    alert(`تم نسخ الأمر بنجاح:\n${text}\n\nيمكنك لصقه في التيرمينال الآن.`);
-                });
-            }
-
-            fetchTools(category) {
-                // Fetch data from API
-                const items = [
-                    { name: 'Tool 1', html_url: 'https://github.com/user/tool1', stargazers_count: 1000, description: 'This is tool 1', language: 'JavaScript', updated_at: '2022-01-01T00:00:00Z' },
-                    { name: 'Tool 2', html_url: 'https://github.com/user/tool2', stargazers_count: 500, description: 'This is tool 2', language: 'Python', updated_at: '2022-02-01T00:00:00Z' },
-                    { name: 'Tool 3', html_url: 'https://github.com/user/tool3', stargazers_count: 2000, description: 'This is tool 3', language: 'Ruby', updated_at: '2022-03-01T00:00:00Z' }
-                ];
-                this.render(items);
+        function renderCategories() {
+            const grid = document.getElementById('catGrid');
+            for (const [name, query] of Object.entries(topics)) {
+                const btn = document.createElement('div');
+                btn.className = 'cat-tag bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mx-2';
+                btn.innerText = name;
+                btn.onclick = function() {
+                    document.querySelectorAll('.cat-tag').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    fetchFromGithub(query);
+                };
+                grid.appendChild(btn);
             }
         }
 
-        const searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-            searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    const titanSearchEngine = new TitanSearchEngine();
-                    titanSearchEngine.fetchTools(searchInput.value);
-                }
-            });
+        function manualSearch() {
+            const val = document.getElementById('searchBox').value;
+            if(val) fetchFromGithub(val);
         }
 
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('category-btn')) {
-                const category = e.target.innerText;
-                const titanSearchEngine = new TitanSearchEngine();
-                titanSearchEngine.fetchTools(category);
-            }
-        });
+        function fetchFromGithub(query) {
+            const results = document.getElementById('results');
+            results.innerHTML = '';
+            const statusText = document.getElementById('statusText');
+            statusText.innerText = 'النتائج: 0';
+            // TO DO: fetch from github and render results
+        }
     </script>
 </body>
 </html>
