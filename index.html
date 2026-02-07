@@ -2,119 +2,103 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Open-Source Discovery Platform</title>
+    <title>GitHub Repository Search</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <nav class="flex justify-center bg-blue-500 text-white p-4">
-        <h1 class="text-2xl">Global Open-Source Discovery Platform</h1>
+    <nav class="bg-white shadow-lg p-4 fixed top-0 left-0 w-full z-10">
+        <div class="container mx-auto flex justify-between">
+            <h1 class="text-2xl font-bold text-gray-700">GitHub Repository Search</h1>
+            <button id="submit-repo" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Submit Your Repository</button>
+        </div>
     </nav>
-    <div class="container mx-auto p-4 pt-6 md:p-6 lg:p-12 xl:p-24">
-        <div class="flex justify-center">
-            <input id="search" type="text" placeholder="Search for repositories" class="w-full p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-            <button id="search-btn" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Search
-            </button>
-        </div>
-        <ul id="tabs" class="flex justify-center mt-6">
-            <li class="mr-2">
-                <button id="trending-python-tools" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Trending Python Tools
-                </button>
-            </li>
-            <li class="mr-2">
-                <button id="top-flutter-packages" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Top Flutter Packages
-                </button>
-            </li>
-            <li>
-                <button id="android-apk-projects" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Android APK Projects
-                </button>
-            </li>
-        </ul>
-        <div id="results" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
-        </div>
-        <div id="load-more" class="flex justify-center mt-6">
-            <button id="load-more-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Load More
-            </button>
-        </div>
-        <div class="mt-12">
-            <h2 class="text-2xl">Submit Your Repository</h2>
-            <input id="repo-link" type="text" placeholder="Enter your GitHub repository link" class="w-full p-2 pl-10 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 mt-4">
-            <button id="submit-repo" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-                Submit
-            </button>
-        </div>
-    </div>
+    <main class="pt-20">
+        <section class="container mx-auto p-4">
+            <h2 class="text-lg font-bold text-gray-700 mb-4">Search and Discovery</h2>
+            <form id="search-form" class="flex justify-between mb-4">
+                <input id="search-input" type="text" class="w-full p-2 pl-10 text-sm text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search for repositories...">
+                <button id="search-button" type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Search</button>
+            </form>
+            <div class="flex justify-between mb-4">
+                <button id="android-apk-button" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Android APK</button>
+                <button id="python-tools-button" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Python Tools</button>
+                <button id="show-more-button" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">عرض المزيد</button>
+            </div>
+            <div id="results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Results will be displayed here -->
+            </div>
+            <div id="no-results" class="text-lg font-bold text-gray-700 hidden">No tools found for this search</div>
+        </section>
+    </main>
     <script>
-        const searchInput = document.getElementById('search');
-        const searchBtn = document.getElementById('search-btn');
-        const tabs = document.getElementById('tabs');
+        const searchForm = document.getElementById('search-form');
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const androidApkButton = document.getElementById('android-apk-button');
+        const pythonToolsButton = document.getElementById('python-tools-button');
+        const showMoreButton = document.getElementById('show-more-button');
         const resultsContainer = document.getElementById('results');
-        const loadMoreBtn = document.getElementById('load-more-btn');
-        const repoLinkInput = document.getElementById('repo-link');
-        const submitRepoBtn = document.getElementById('submit-repo');
+        const noResultsContainer = document.getElementById('no-results');
+        const submitRepoButton = document.getElementById('submit-repo');
+
         let currentPage = 1;
-        let currentTab = '';
+        let searchTerm = '';
 
-        searchBtn.addEventListener('click', searchRepositories);
-        loadMoreBtn.addEventListener('click', loadMoreRepositories);
-        submitRepoBtn.addEventListener('click', submitRepository);
-
-        function searchRepositories() {
-            const keyword = searchInput.value.trim();
-            if (keyword === '') return;
-            currentPage = 1;
-            currentTab = '';
-            fetchRepositories(keyword);
-        }
-
-        function loadMoreRepositories() {
-            const keyword = searchInput.value.trim();
-            if (keyword === '') return;
-            currentPage++;
-            fetchRepositories(keyword);
-        }
-
-        function fetchRepositories(keyword) {
-            const url = `https://api.github.com/search/repositories?q=${keyword}&page=${currentPage}`;
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const repositories = data.items;
-                    renderRepositories(repositories);
-                });
-        }
-
-        function renderRepositories(repositories) {
-            const fragment = document.createDocumentFragment();
-            repositories.forEach(repository => {
-                const card = document.createElement('div');
-                card.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-md');
-                card.innerHTML = `
-                    <h3 class="text-xl font-bold">${repository.name}</h3>
-                    <p>Stars: ${repository.stargazers_count}</p>
-                    <p>Forks: ${repository.forks_count}</p>
-                    <a href="${repository.releases_url}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download</a>
-                `;
-                fragment.appendChild(card);
-            });
-            if (currentPage === 1) {
-                resultsContainer.innerHTML = '';
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            searchTerm = searchInput.value.trim();
+            if (searchTerm) {
+                fetchRepos(searchTerm, currentPage);
             }
-            resultsContainer.appendChild(fragment);
-        }
+        });
 
-        function submitRepository() {
-            const repoLink = repoLinkInput.value.trim();
-            if (repoLink === '') return;
-            // Submit repository link to server
-            console.log(`Repository link submitted: ${repoLink}`);
-            repoLinkInput.value = '';
+        androidApkButton.addEventListener('click', () => {
+            searchTerm = 'Android APK';
+            fetchRepos(searchTerm, currentPage);
+        });
+
+        pythonToolsButton.addEventListener('click', () => {
+            searchTerm = 'Python Tools';
+            fetchRepos(searchTerm, currentPage);
+        });
+
+        showMoreButton.addEventListener('click', () => {
+            currentPage++;
+            fetchRepos(searchTerm, currentPage);
+        });
+
+        submitRepoButton.addEventListener('click', () => {
+            alert('Thank you! Your repo is under review.');
+        });
+
+        function fetchRepos(searchTerm, page) {
+            const url = `https://api.github.com/search/repositories?q=${searchTerm}&page=${page}`;
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.items.length > 0) {
+                        noResultsContainer.classList.add('hidden');
+                        resultsContainer.innerHTML = '';
+                        data.items.forEach((repo) => {
+                            const repoHTML = `
+                                <div class="bg-white p-4 rounded-md shadow-md">
+                                    <h3 class="text-lg font-bold text-gray-700">${repo.name}</h3>
+                                    <p class="text-sm text-gray-700">${repo.description}</p>
+                                    <p class="text-sm text-gray-700">Stars: ${repo.stargazers_count}</p>
+                                    <a href="${repo.html_url}" target="_blank" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">View on GitHub</a>
+                                </div>
+                            `;
+                            resultsContainer.insertAdjacentHTML('beforeend', repoHTML);
+                        });
+                    } else {
+                        resultsContainer.innerHTML = '';
+                        noResultsContainer.classList.remove('hidden');
+                    }
+                })
+                .catch((error) => console.error(error));
         }
     </script>
 </body>
