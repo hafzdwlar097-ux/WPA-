@@ -1,197 +1,53 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TitansSec - محرك البحث الشامل للمطورين والباحثين</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/lucide@1.5.0/dist/lucide.js"></script>
-    <style>
-        .search-input {
-            @apply border border-gray-300 rounded-md p-2;
-        }
-        .search-input:focus {
-            @apply outline-none border-blue-500;
-        }
-        .category-button {
-            @apply p-2 bg-gray-100 hover:bg-gray-200 rounded-md transition;
-        }
-        .category-button:hover {
-            @apply shadow-md;
-        }
-        .result-item {
-            @apply p-4 bg-white rounded-md shadow-sm;
-        }
-        .result-item:hover {
-            @apply bg-gray-100;
-        }
-    </style>
+    <title>الصفحة الرئيسية</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide@1.7.1/dist/lucide.min.css">
 </head>
-<body class="h-screen flex flex-col justify-center items-center bg-gray-100">
-    <header class="bg-white shadow-sm p-4 w-full">
-        <h1 class="text-3xl font-bold">TitansSec</h1>
-        <p class="text-lg">محرك البحث الشامل للمطورين والباحثين</p>
+<body dir="rtl">
+    <header class="bg-gray-900 py-4 text-white">
+        <nav class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold">الموقع الرئيسي</h1>
+            <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-white">ابحث</button>
+        </nav>
     </header>
-    <main class="flex-1 flex flex-col justify-center items-center">
-        <section class="w-full max-w-4xl p-4">
-            <h2 class="text-2xl font-bold">إبحث في الأدوات والمكتبات الأمنية</h2>
-            <form id="search-form" class="flex items-center">
-                <input id="search-input" type="text" placeholder="أدخل كلمة البحث..." class="search-input w-full">
-                <button id="search-button" type="submit" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">بحث</button>
-            </form>
-            <div id="categories" class="mt-4">
-                <h3 class="text-xl font-bold">الأقسام الشاملة</h3>
-                <ul class="flex flex-wrap justify-center">
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🔥 الكل')">🔥 الكل</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🏆 أفضل الأدوات')">🏆 أفضل الأدوات</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🤖 أندرويد (Android)')">🤖 أندرويد (Android)</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🍎 آيفون (iOS/macOS)')">🍎 آيفون (iOS/macOS)</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🪟 ويندوز (Windows)')">🪟 ويندوز (Windows)</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🐧 لينكس (Linux)')">🐧 لينكس (Linux)</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🐍 بايثون (Python)')">🐍 بايثون (Python)</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🐹 GoLang')">🐹 GoLang</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🦀 Rust')">🦀 Rust</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('📜 JavaScript/Node')">📜 JavaScript/Node</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🇨 C/C++')">🇨 C/C++</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🌐 اختراق المواقع')">🌐 اختراق المواقع</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('📡 الشبكات والواي فاي')">📡 الشبكات والواي فاي</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('☁️ الحوسبة السحابية')">☁️ الحوسبة السحابية</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('📱 الهندسة العكسية')">📱 الهندسة العكسية</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🔐 التشفير')">🔐 التشفير</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🕵️ التحقيق الجنائي')">🕵️ التحقيق الجنائي</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🐛 قواعد بيانات الثغرات')">🐛 قواعد بيانات الثغرات</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('💣 Zero-Day (بحث)')">💣 Zero-Day (بحث)</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🦠 تحليل البرمجيات الخبيثة')">🦠 تحليل البرمجيات الخبيثة</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('📚 مكتبات أمنية')">📚 مكتبات أمنية</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🛠️ أدوات بناء المعامل')">🛠️ أدوات بناء المعامل</button>
-                    </li>
-                    <li class="mr-2 mb-2">
-                        <button class="category-button" onclick="searchCategory('🧠 ذكاء اصطناعي للأمن')">🧠 ذكاء اصطناعي للأمن</button>
-                    </li>
-                </ul>
-            </div>
-            <div id="results-container" class="mt-4"></div>
+    <main class="container mx-auto mt-10">
+        <section class="bg-gray-100 p-4 rounded-md shadow-md mb-10">
+            <h2 class="text-2xl font-bold mb-2">أفضل الأدوات</h2>
+            <div id="tools" class="flex flex-wrap justify-center"></div>
+        </section>
+        <section class="bg-gray-100 p-4 rounded-md shadow-md">
+            <h2 class="text-2xl font-bold mb-2">البحث</h2>
+            <input type="text" id="search" class="w-full p-2 rounded-md" placeholder="검색...">
+            <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-white mt-2" onclick="TitanSearchEngine.fetchTools('🏆 أفضل الأدوات')">ابحث</button>
         </section>
     </main>
     <script>
-        const TitanSearchEngine = {
-            baseUrl: "https://api.github.com/search/repositories?q=",
-            categories: {
-                '🔥 الكل': 'hacking+tool+collection+pentest',
-                '🏆 أفضل الأدوات': 'awesome-security+top-tools+best-of',
-                '🤖 أندرويد (Android)': 'android+security+root+adb+termux',
-                '🍎 آيفون (iOS/macOS)': 'ios+jailbreak+macos+security+forensics',
-                '🪟 ويندوز (Windows)': 'windows+privilege-escalation+active-directory+powershell',
-                '🐧 لينكس (Linux)': 'linux+hardening+kernel+exploits+bash',
-                '🐍 بايثون (Python)': 'python+security+scapy+requests+exploit',
-                '🐹 GoLang': 'golang+security+scanner+tool',
-                '🦀 Rust': 'rust+malware-analysis+red-team',
-                '📜 JavaScript/Node': 'nodejs+security+xss+prototype-pollution',
-                '🇨 C/C++': 'cpp+memory-corruption+buffer-overflow+exploit',
-                '🌐 اختراق المواقع': 'web-pentest+sqli+xss+ssrf+burp',
-                '📡 الشبكات والواي فاي': 'network-security+wifi+wpa2+bettercap+nmap',
-                '☁️ الحوسبة السحابية': 'cloud-security+aws+azure+gcp+docker+kubernetes',
-                '📱 الهندسة العكسية': 'reverse-engineering+ghidra+ida+debugger',
-                '🔐 التشفير': 'cryptography+encryption+hash-cracker+ransomware-decryption',
-                '🕵️ التحقيق الجنائي': 'digital-forensics+autopsy+volatility+memory-dump',
-                '🐛 قواعد بيانات الثغرات': 'cve+exploit-db+vulnerability-database',
-                '💣 Zero-Day (بحث)': 'zero-day+poc+proof-of-concept',
-                '🦠 تحليل البرمجيات الخبيثة': 'malware-analysis+sandbox+virus-total-api',
-                '📚 مكتبات أمنية': 'security-library+api+sdk+framework',
-                '🛠️ أدوات بناء المعامل': 'vulnerable-lab+ctf+docker-compose+metasploitable',
-                '🧠 ذكاء اصطناعي للأمن': 'ai+cybersecurity+machine-learning+threat-detection'
-            },
-            async fetchTools(categoryName) {
-                const grid = document.getElementById('results-container');
-                grid.innerHTML = `
-                    <div style="width:100%; text-align:center; padding:40px;">
-                        <h3 style="color:#0f0;">جاري استدعاء أدوات ${categoryName} من الخوادم...</h3>
-                        <p>يتم الآن فحص آلاف المستودعات...</p>
-                    </div>
-                `;
-                let query = this.categories[categoryName];
-                if (!query) query = categoryName;
-                try {
-                    const response = await fetch(`${this.baseUrl}${query}&sort=stars&order=desc&per_page=100`);
-                    if (!response.ok) throw new Error("تجاوزت حد البحث المسموح به لليوم (API Rate Limit)");
-                    const data = await response.json();
-                    if (data.items && data.items.length > 0) {
-                        this.render(data.items);
-                    } else {
-                        grid.innerHTML = `<div style="text-align:center;"><h3>لم يتم العثور على نتائج لـ ${categoryName}</h3></div>`;
-                    }
-                } catch (e) {
-                    console.error(e);
-                    grid.innerHTML = `<div style="text-align:center; color:red;"><h3>حدث خطأ: ${e.message}</h3><p>تأكد من الاتصال بالإنترنت.</p></div>`;
-                }
-            },
-            render(items) {
-                const grid = document.getElementById('results-container');
-                const resultsHtml = items.map(item => `
-                    <div class="result-item">
-                        <h4>${item.name}</h4>
-                        <p>${item.description}</p>
-                        <p>نجمات: ${item.stargazers_count}</p>
-                        <p>لغة: ${item.language}</p>
-                    </div>
-                `).join('');
-                grid.innerHTML = resultsHtml;
-            }
+        window.onload = () => {
+            TitanSearchEngine.fetchTools('🏆 أفضل الأدوات');
         };
-        function searchCategory(categoryName) {
-            TitanSearchEngine.fetchTools(categoryName);
-        }
-        document.getElementById('search-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const query = document.getElementById('search-input').value.trim();
-            if (query) {
-                await TitanSearchEngine.fetchTools(query);
-            }
-        });
+        // TitanSearchEngine.fetchTools function should be defined somewhere
+        function TitanSearchEngine() {}
+        TitanSearchEngine.fetchTools = function(query) {
+            fetch(`https://example.com/api/tools?q=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                const toolsContainer = document.getElementById('tools');
+                toolsContainer.innerHTML = '';
+                data.forEach(tool => {
+                    const toolElement = document.createElement('div');
+                    toolElement.className = 'bg-white p-4 rounded-md shadow-md m-2';
+                    toolElement.innerHTML = `
+                        <h3 class="text-xl font-bold mb-2">${tool.name}</h3>
+                        <p class="text-gray-600">${tool.description}</p>
+                    `;
+                    toolsContainer.appendChild(toolElement);
+                });
+            })
+            .catch(error => console.error(error));
+        };
     </script>
 </body>
 </html>
