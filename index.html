@@ -1,171 +1,73 @@
-<html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المحرك العالمي للأدوات والأنظمة</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/lucide@0.4.2/dist/lucide.min.js" integrity="sha256-JdX0XK9W3Z6V+0hT9Kf3Z8m9VZ8JWz8eRtVqkF8f7Q=" crossorigin="anonymous"></script>
-    <style>
-        /* --- التصميم العصري (UI/UX) --- */
-        :root {
-            --neon-green: #00ff41;
-            --deep-black: #050505;
-            --card-bg: #121212;
-            --glass-effect: rgba(255, 255, 255, 0.05);
-        }
-
-        body {
-            background-color: var(--deep-black);
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0; padding: 0;
-            overflow-x: hidden;
-        }
-
-        /* شاشة الترحيب السينمائية */
-        #welcome-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: black; z-index: 10000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.8s ease-out;
-        }
-
-        .matrix-text {
-            color: var(--neon-green);
-            font-family: 'Courier New', monospace;
-            font-size: 1.5rem;
-            text-align: center;
-            border-right: 3px solid var(--neon-green);
-            white-space: nowrap;
-            overflow: hidden;
-            animation: type 3s steps(40, end), blink .7s infinite;
-        }
-
-        @keyframes type { from { width: 0 } to { width: 100% } }
-        @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--neon-green) } }
-
-        /* الهيدر والبحث */
-        header {
-            padding: 50px 20px;
-            background: linear-gradient(180deg, #000, var(--deep-black));
-            text-align: center;
-            border-bottom: 2px solid var(--neon-green);
-        }
-
-        #searchInput {
-            width: 90%; max-width: 700px;
-            padding: 18px 25px;
-            border-radius: 50px;
-            border: 2px solid var(--neon-green);
-            background: rgba(20, 20, 20, 0.9);
-            color: white;
-            font-size: 1.2rem;
-            outline: none;
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
-        }
-
-        /* شبكة الأقسام الضخمة */
-        .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 12px;
-            padding: 30px 20px;
-            background: #0a0a0a;
-        }
-
-        .category-btn {
-            background: var(--card-bg);
-            border: 1px solid #333;
-            color: #ddd;
-            padding: 12px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-
-        .category-btn:hover {
-            background: var(--neon-green);
-            color: black;
-            font-weight: bold;
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--neon-green);
-        }
-
-        /* منطقة النتائج */
-        .results-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
-            padding: 40px 20px;
-        }
-
-        .tool-card {
-            background: var(--card-bg);
-            border: 1px solid #222;
-            border-radius: 15px;
-            padding: 25px;
-            position: relative;
-            transition: 0.3s ease;
-            overflow: hidden;
-        }
-
-        .tool-card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
-            background: var(--neon-green);
-        }
-
-        .tool-card:hover {
-            border-color: var(--neon-green);
-            transform: translateY(-8px);
-        }
-
-        .tool-card h3 { color: var(--neon-green); margin: 0 0 12px 0; }
-        .tool-card p { font-size: 0.95rem; color: #bbb; line-height: 1.6; min-height: 60px; }
-    </style>
+    <title>المكتبة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide@1.7.1/dist/lucide.min.css">
 </head>
-<body>
-    <div id="welcome-screen">
-        <h1 class="matrix-text">مرحباً بكم في محرك العالمي للأدوات والأنظمة</h1>
-    </div>
-    <header>
-        <h2>المحرك العالمي للأدوات والأنظمة</h2>
-        <input id="searchInput" type="text" placeholder="ابحث عن أداة أو نظام...">
+<body dir="rtl" class="bg-gray-100">
+    <header class="bg-white py-4 shadow-md">
+        <nav class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-700">المكتبة</h1>
+            <input type="search" id="searchInput" class="rounded-md py-2 pl-10 text-gray-700 border border-gray-300" placeholder="ابحث...">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <lucide-search class="mr-2"></lucide-search>
+                بحث
+            </button>
+        </nav>
     </header>
-    <div class="categories-grid">
-        <button class="category-btn">أدوات البرمجة</button>
-        <button class="category-btn">أنظمة التشغيل</button>
-        <button class="category-btn">شبكات وأمان</button>
-        <button class="category-btn">قواعد البيانات</button>
-        <button class="category-btn">تطبيقات ويب</button>
-    </div>
-    <div class="results-container">
-        <div class="tool-card">
-            <h3>أداة برمجة 1</h3>
-            <p>هذه أداة برمجة قوية ومجانية...</p>
+    <main class="container mx-auto p-4 mt-4">
+        <div class="flex flex-wrap justify-center mb-4">
+            <button class="category-btn bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded mr-2">برمجة</button>
+            <button class="category-btn bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded mr-2">علم البيانات</button>
+            <button class="category-btn bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded mr-2">إدارة الشبكات</button>
+            <button class="category-btn bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded mr-2">حماية المعلومات</button>
         </div>
-        <div class="tool-card">
-            <h3>نظام تشغيل 2</h3>
-            <p>هذا نظام تشغيل سريع وموثوق...</p>
-        </div>
-        <div class="tool-card">
-            <h3>شبكة وأمان 3</h3>
-            <p>هذه شبكة وأمان قوية وفعالة...</p>
-        </div>
-        <div class="tool-card">
-            <h3>قاعدة بيانات 4</h3>
-            <p>هذا قاعدة بيانات كبيرة وموثوقة...</p>
-        </div>
-        <div class="tool-card">
-            <h3>تطبيق ويب 5</h3>
-            <p>هذا تطبيق ويب سريع وفعال...</p>
-        </div>
-    </div>
+        <div id="box" class="grid grid-cols-1 gap-4"></div>
+    </main>
     <script>
-        setTimeout(() => {
-            document.getElementById('welcome-screen').style.opacity = 0;
-        }, 3000);
+        const box = document.getElementById('box');
+        const categoryGroup = document.getElementById('categoryGroup');
+
+        function runSearch(query) {
+            try {
+                fetch(`https://api.github.com/search/repositories?q=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        box.innerHTML = '';
+                        data.items.forEach(repo => {
+                            const card = `
+                                <div class="card bg-white shadow-md p-4 rounded">
+                                    <h2 class="text-2xl font-bold text-gray-700">${repo.name}</h2>
+                                    <p class="text-gray-600">${repo.description}</p>
+                                    <div class="card-footer">
+                                        <span class="lang-tag">${repo.language || 'Multi'}</span>
+                                        <a href="${repo.html_url}/archive/refs/heads/main.zip" class="download-zip">تحميل ZIP</a>
+                                    </div>
+                                </div>
+                            `;
+                            box.insertAdjacentHTML('beforeend', card);
+                        });
+                    });
+            } catch (err) {
+                box.innerHTML = '<p class="text-center">خطأ في الاتصال بالسيرفر.</p>';
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') runSearch(e.target.value);
+        });
+
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const finalQuery = button.innerText + " hacking security tools";
+                runSearch(finalQuery);
+            });
+        });
     </script>
 </body>
 </html>
