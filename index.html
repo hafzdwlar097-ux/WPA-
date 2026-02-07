@@ -2,104 +2,196 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Repository Search</title>
+    <title>Ultimate Developer Hub</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-white shadow-lg p-4 fixed top-0 left-0 w-full z-10">
-        <div class="container mx-auto flex justify-between">
-            <h1 class="text-2xl font-bold text-gray-700">GitHub Repository Search</h1>
-            <button id="submit-repo" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Submit Your Repository</button>
-        </div>
+    <nav class="bg-blue-500 text-white p-4 flex justify-between">
+        <h1 class="text-2xl font-bold">Ultimate Developer Hub</h1>
+        <ul class="flex items-center space-x-4">
+            <li><a href="#cybersecurity" class="hover:text-gray-300">Cybersecurity</a></li>
+            <li><a href="#ai" class="hover:text-gray-300">AI & Data Science</a></li>
+            <li><a href="#webdev" class="hover:text-gray-300">Web Development</a></li>
+            <li><a href="#mobiledev" class="hover:text-gray-300">Mobile Development</a></li>
+        </ul>
     </nav>
-    <main class="pt-20">
-        <section class="container mx-auto p-4">
-            <h2 class="text-lg font-bold text-gray-700 mb-4">Search and Discovery</h2>
-            <form id="search-form" class="flex justify-between mb-4">
-                <input id="search-input" type="text" class="w-full p-2 pl-10 text-sm text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search for repositories...">
-                <button id="search-button" type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Search</button>
+    <main class="container mx-auto p-4 pt-6 mt-10">
+        <section id="filter" class="bg-white p-4 rounded shadow-md mb-4">
+            <h2 class="text-lg font-bold mb-2">Advanced Filtering</h2>
+            <form>
+                <input type="text" placeholder="Search repositories" class="w-full p-2 pl-10 text-sm text-gray-700 rounded">
+                <select class="w-full p-2 pl-10 text-sm text-gray-700 rounded mt-2">
+                    <option value="all">All</option>
+                    <option value="cybersecurity">Cybersecurity</option>
+                    <option value="ai">AI & Data Science</option>
+                    <option value="webdev">Web Development</option>
+                    <option value="mobiledev">Mobile Development</option>
+                </select>
             </form>
-            <div class="flex justify-between mb-4">
-                <button id="android-apk-button" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Android APK</button>
-                <button id="python-tools-button" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Python Tools</button>
-                <button id="show-more-button" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">عرض المزيد</button>
+        </section>
+        <section id="cybersecurity" class="bg-white p-4 rounded shadow-md mb-4">
+            <h2 class="text-lg font-bold mb-2 flex items-center"><i class="fas fa-shield-alt text-blue-500 mr-2"></i> Cybersecurity</h2>
+            <ul>
+                <li class="py-2 border-b border-gray-300 flex justify-between">
+                    <span>Repository 1</span>
+                    <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                </li>
+                <li class="py-2 border-b border-gray-300 flex justify-between">
+                    <span>Repository 2</span>
+                    <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                </li>
+            </ul>
+        </section>
+        <section id="ai" class="bg-white p-4 rounded shadow-md mb-4">
+            <h2 class="text-lg font-bold mb-2 flex items-center"><i class="fas fa-brain text-blue-500 mr-2"></i> AI & Data Science</h2>
+            <ul>
+                <li class="py-2 border-b border-gray-300 flex justify-between">
+                    <span>Repository 1</span>
+                    <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                </li>
+                <li class="py-2 border-b border-gray-300 flex justify-between">
+                    <span>Repository 2</span>
+                    <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                </li>
+            </ul>
+        </section>
+        <section id="webdev" class="bg-white p-4 rounded shadow-md mb-4">
+            <h2 class="text-lg font-bold mb-2 flex items-center"><i class="fas fa-code text-blue-500 mr-2"></i> Web Development</h2>
+            <ul>
+                <li class="py-2 border-b border-gray-300 flex justify-between">
+                    <span>Repository 1</span>
+                    <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                </li>
+                <li class="py-2 border-b border-gray-300 flex justify-between">
+                    <span>Repository 2</span>
+                    <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                </li>
+            </ul>
+        </section>
+        <section id="mobiledev" class="bg-white p-4 rounded shadow-md mb-4">
+            <h2 class="text-lg font-bold mb-2 flex items-center"><i class="fas fa-mobile-alt text-blue-500 mr-2"></i> Mobile Development</h2>
+            <ul>
+                <li class="py-2 border-b border-gray-300 flex justify-between">
+                    <span>Repository 1</span>
+                    <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                </li>
+                <li class="py-2 border-b border-gray-300 flex justify-between">
+                    <span>Repository 2</span>
+                    <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                </li>
+            </ul>
+        </section>
+        <section id="tabs" class="bg-white p-4 rounded shadow-md mb-4">
+            <h2 class="text-lg font-bold mb-2">Multi-Language Support</h2>
+            <ul class="flex flex-wrap justify-center mb-4">
+                <li class="mr-4 mb-4">
+                    <a href="#python" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Python Tools</a>
+                </li>
+                <li class="mr-4 mb-4">
+                    <a href="#javascript" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">JavaScript Hub</a>
+                </li>
+                <li class="mr-4 mb-4">
+                    <a href="#cpp" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">C++ Power</a>
+                </li>
+                <li class="mr-4 mb-4">
+                    <a href="#go" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Go Projects</a>
+                </li>
+            </ul>
+            <div id="python" class="bg-white p-4 rounded shadow-md mb-4 hidden">
+                <h3 class="text-lg font-bold mb-2">Python Tools</h3>
+                <ul>
+                    <li class="py-2 border-b border-gray-300 flex justify-between">
+                        <span>Repository 1</span>
+                        <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                    </li>
+                    <li class="py-2 border-b border-gray-300 flex justify-between">
+                        <span>Repository 2</span>
+                        <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                    </li>
+                </ul>
             </div>
-            <div id="results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Results will be displayed here -->
+            <div id="javascript" class="bg-white p-4 rounded shadow-md mb-4 hidden">
+                <h3 class="text-lg font-bold mb-2">JavaScript Hub</h3>
+                <ul>
+                    <li class="py-2 border-b border-gray-300 flex justify-between">
+                        <span>Repository 1</span>
+                        <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                    </li>
+                    <li class="py-2 border-b border-gray-300 flex justify-between">
+                        <span>Repository 2</span>
+                        <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                    </li>
+                </ul>
             </div>
-            <div id="no-results" class="text-lg font-bold text-gray-700 hidden">No tools found for this search</div>
+            <div id="cpp" class="bg-white p-4 rounded shadow-md mb-4 hidden">
+                <h3 class="text-lg font-bold mb-2">C++ Power</h3>
+                <ul>
+                    <li class="py-2 border-b border-gray-300 flex justify-between">
+                        <span>Repository 1</span>
+                        <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                    </li>
+                    <li class="py-2 border-b border-gray-300 flex justify-between">
+                        <span>Repository 2</span>
+                        <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="go" class="bg-white p-4 rounded shadow-md mb-4 hidden">
+                <h3 class="text-lg font-bold mb-2">Go Projects</h3>
+                <ul>
+                    <li class="py-2 border-b border-gray-300 flex justify-between">
+                        <span>Repository 1</span>
+                        <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                    </li>
+                    <li class="py-2 border-b border-gray-300 flex justify-between">
+                        <span>Repository 2</span>
+                        <a href="#" class="text-blue-500 hover:text-blue-700">View</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section id="apk" class="bg-white p-4 rounded shadow-md mb-4">
+            <h2 class="text-lg font-bold mb-2">Direct APK Links</h2>
+            <ul>
+                <li class="py-2 border-b border-gray-300 flex justify-between">
+                    <span>Repository 1</span>
+                    <a href="#" class="text-blue-500 hover:text-blue-700">Download App</a>
+                </li>
+                <li class="py-2 border-b border-gray-300 flex justify-between">
+                    <span>Repository 2</span>
+                    <a href="#" class="text-blue-500 hover:text-blue-700">Download App</a>
+                </li>
+            </ul>
+        </section>
+        <section id="trending" class="bg-white p-4 rounded shadow-md mb-4">
+            <h2 class="text-lg font-bold mb-2">Top 10 Global Tools</h2>
+            <ol>
+                <li class="py-2 border-b border-gray-300 flex justify-between">
+                    <span>Repository 1</span>
+                    <span class="text-gray-600">10,000 stars</span>
+                </li>
+                <li class="py-2 border-b border-gray-300 flex justify-between">
+                    <span>Repository 2</span>
+                    <span class="text-gray-600">5,000 stars</span>
+                </li>
+            </ol>
         </section>
     </main>
     <script>
-        const searchForm = document.getElementById('search-form');
-        const searchInput = document.getElementById('search-input');
-        const searchButton = document.getElementById('search-button');
-        const androidApkButton = document.getElementById('android-apk-button');
-        const pythonToolsButton = document.getElementById('python-tools-button');
-        const showMoreButton = document.getElementById('show-more-button');
-        const resultsContainer = document.getElementById('results');
-        const noResultsContainer = document.getElementById('no-results');
-        const submitRepoButton = document.getElementById('submit-repo');
-
-        let currentPage = 1;
-        let searchTerm = '';
-
-        searchForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            searchTerm = searchInput.value.trim();
-            if (searchTerm) {
-                fetchRepos(searchTerm, currentPage);
-            }
+        const tabs = document.querySelectorAll('#tabs a');
+        const tabContents = document.querySelectorAll('#tabs div');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', event => {
+                event.preventDefault();
+                const target = event.target.getAttribute('href');
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                document.querySelector(target).classList.remove('hidden');
+            });
         });
-
-        androidApkButton.addEventListener('click', () => {
-            searchTerm = 'Android APK';
-            fetchRepos(searchTerm, currentPage);
-        });
-
-        pythonToolsButton.addEventListener('click', () => {
-            searchTerm = 'Python Tools';
-            fetchRepos(searchTerm, currentPage);
-        });
-
-        showMoreButton.addEventListener('click', () => {
-            currentPage++;
-            fetchRepos(searchTerm, currentPage);
-        });
-
-        submitRepoButton.addEventListener('click', () => {
-            alert('Thank you! Your repo is under review.');
-        });
-
-        function fetchRepos(searchTerm, page) {
-            const url = `https://api.github.com/search/repositories?q=${searchTerm}&page=${page}`;
-            fetch(url)
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.items.length > 0) {
-                        noResultsContainer.classList.add('hidden');
-                        resultsContainer.innerHTML = '';
-                        data.items.forEach((repo) => {
-                            const repoHTML = `
-                                <div class="bg-white p-4 rounded-md shadow-md">
-                                    <h3 class="text-lg font-bold text-gray-700">${repo.name}</h3>
-                                    <p class="text-sm text-gray-700">${repo.description}</p>
-                                    <p class="text-sm text-gray-700">Stars: ${repo.stargazers_count}</p>
-                                    <a href="${repo.html_url}" target="_blank" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">View on GitHub</a>
-                                </div>
-                            `;
-                            resultsContainer.insertAdjacentHTML('beforeend', repoHTML);
-                        });
-                    } else {
-                        resultsContainer.innerHTML = '';
-                        noResultsContainer.classList.remove('hidden');
-                    }
-                })
-                .catch((error) => console.error(error));
-        }
     </script>
 </body>
 </html>
