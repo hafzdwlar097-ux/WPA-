@@ -3,101 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Source Platform</title>
+    <title>File Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@1.3.0/dist/lucide.min.js"></script>
     <style>
-        .glass {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-        .glow {
-            outline: 2px solid #3A86FF;
-            outline-offset: 2px;
-            border-radius: 10px;
-        }
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(58, 134, 255, 0.7);
-            }
-            70% {
-                transform: scale(1.05);
-                box-shadow: 0 0 0 10px rgba(58, 134, 255, 0);
-            }
-            100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(58, 134, 255, 0);
-            }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
         }
     </style>
 </head>
-<body class="h-screen bg-black text-white" data-aos-easing="ease-out-cubic" data-aos-duration="2000">
-    <nav class="fixed top-0 left-0 z-10 w-full flex justify-center py-4">
-        <div class="glow w-max mx-auto">
-            <input type="text" class="px-4 py-2 w-80 rounded-lg" placeholder="Search...">
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto p-4 pt-6 md:p-6 lg:p-12 xl:p-24">
+        <h1 class="text-3xl font-bold mb-4">File Manager</h1>
+        <div id="loading" class="flex justify-center mb-4">
+            <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-white" role="status">
+                <span class="sr-only">Syncing with GitHub...</span>
+            </div>
+            <span class="ml-2">Syncing with GitHub...</span>
         </div>
-    </nav>
-    <div class="flex h-screen">
-        <aside class="hidden lg:block lg:w-64 xl:w-80 bg-gray-700 p-4 fixed top-0 left-0 h-screen z-0">
-            <button class="lg:hidden w-8 h-8 rounded-full bg-gray-600 hover:bg-gray-500 absolute top-4 right-4" id="toggle-sidebar">
-                <i class="fas fa-bars text-white"></i>
-            </button>
-            <ul class="space-y-2">
-                <li class="text-lg font-bold">Menu</li>
-                <li><a href="#" class="block py-2 pl-3 pr-4 text-base text-gray-200 rounded hover:bg-gray-600"><i class="fas fa-home mr-2"></i> Home</a></li>
-                <li><a href="#" class="block py-2 pl-3 pr-4 text-base text-gray-200 rounded hover:bg-gray-600"><i class="fas fa-cog mr-2"></i> Settings</a></li>
-            </ul>
-        </aside>
-        <main class="flex-1 p-4 lg:pl-64 xl:pl-80">
-            <section class="flex space-x-4" data-aos="fade-up">
-                <div class="glass p-4 w-64">
-                    <h3 class="text-lg font-bold">Total Downloads</h3>
-                    <p class="text-3xl font-extrabold">10,000</p>
-                </div>
-                <div class="glass p-4 w-64">
-                    <h3 class="text-lg font-bold">Total Tools</h3>
-                    <p class="text-3xl font-extrabold">50</p>
-                </div>
-                <div class="glass p-4 w-64">
-                    <h3 class="text-lg font-bold">Active Users</h3>
-                    <p class="text-3xl font-extrabold">1,000</p>
-                </div>
-                <div class="glass p-4 w-64">
-                    <h3 class="text-lg font-bold">Repo Stars</h3>
-                    <p class="text-3xl font-extrabold">500</p>
-                </div>
-            </section>
-            <section class="mt-8" data-aos="fade-up">
-                <h2 class="text-3xl font-bold">About</h2>
-                <p class="text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.</p>
-                <button class="mt-4 bg-gradient-to-r from-purple-500 to-blue-500 py-2 px-4 rounded-lg text-white font-bold animate-pulse" data-aos="fade-up">Get Started</button>
-            </section>
-            <section class="fixed bottom-0 left-0 w-full p-4" data-aos="fade-up">
-                <div class="bg-black p-2 rounded-lg">
-                    <span class="text-lg font-bold">$</span> 
-                    <span class="text-lg" id="terminal">Welcome Ibrahim...</span>
-                </div>
-            </section>
-        </main>
+        <div id="files" class="hidden">
+            <h2 class="text-2xl font-bold mb-4">Mobile Apps</h2>
+            <div id="mobile-apps" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+            <h2 class="text-2xl font-bold mt-8 mb-4">Developer Tools</h2>
+            <div id="developer-tools" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+            <h2 class="text-2xl font-bold mt-8 mb-4">General Files</h2>
+            <div id="general-files" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+        </div>
     </div>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init();
-        const terminal = document.getElementById('terminal');
-        let i = 0;
-        const text = 'Welcome Ibrahim...';
-        function type() {
-            if (i < text.length) {
-                terminal.textContent += text[i];
-                i++;
-                setTimeout(type, 100);
-            }
+        const repoOwner = 'hafzdwlar097-ux';
+        const repoName = 'WPA-';
+        const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/`;
+        let files = [];
+
+        function getFileSize(size) {
+            if (size < 1024) return `${size} bytes`;
+            else if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
+            else if (size < 1024 * 1024 * 1024) return `${(size / 1024 / 1024).toFixed(2)} MB`;
+            else return `${(size / 1024 / 1024 / 1024).toFixed(2)} GB`;
         }
-        type();
+
+        function createCard(file) {
+            const card = document.createElement('div');
+            card.classList.add('bg-gray-800', 'rounded', 'p-4', 'shadow');
+            card.innerHTML = `
+                <h3 class="text-lg font-bold">${file.name}</h3>
+                <p class="text-sm">${getFileSize(file.size)}</p>
+                <a href="${file.download_url}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Direct Download</a>
+            `;
+            return card;
+        }
+
+        function categorizeFiles(files) {
+            const mobileApps = [];
+            const developerTools = [];
+            const generalFiles = [];
+
+            files.forEach(file => {
+                if (file.name.endsWith('.apk')) mobileApps.push(file);
+                else if (file.name.endsWith('.py') || file.name.endsWith('.js')) developerTools.push(file);
+                else generalFiles.push(file);
+            });
+
+            return { mobileApps, developerTools, generalFiles };
+        }
+
+        function renderFiles(files) {
+            const { mobileApps, developerTools, generalFiles } = categorizeFiles(files);
+            const mobileAppsContainer = document.getElementById('mobile-apps');
+            const developerToolsContainer = document.getElementById('developer-tools');
+            const generalFilesContainer = document.getElementById('general-files');
+
+            mobileAppsContainer.innerHTML = '';
+            developerToolsContainer.innerHTML = '';
+            generalFilesContainer.innerHTML = '';
+
+            mobileApps.forEach(file => {
+                mobileAppsContainer.appendChild(createCard(file));
+            });
+
+            developerTools.forEach(file => {
+                developerToolsContainer.appendChild(createCard(file));
+            });
+
+            generalFiles.forEach(file => {
+                generalFilesContainer.appendChild(createCard(file));
+            });
+        }
+
+        function fetchFiles() {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    files = data;
+                    renderFiles(files);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('files').classList.remove('hidden');
+                })
+                .catch(error => console.error(error));
+        }
+
+        fetchFiles();
     </script>
 </body>
 </html>
