@@ -1,92 +1,51 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>Global Security Tools</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق ذكاء اصطناعي</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-50oBUHEmvmN4HQHCTHUIYB7kPdyYRoo/iMLtd4PqhXkofBKouLNvJiGkXFRKfT6AEpxg+Z 2qy7NTYAmbRYnFA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        :root { --main: #00d4ff; --dark: #0a0a0a; }
-        body { background: var(--dark); color: white; font-family: sans-serif; margin: 0; text-align: center; }
-        
-        /* شاشة الترحيب */
-        #loader { position: fixed; inset: 0; background: black; z-index: 100; display: flex; align-items: center; justify-content: center; font-family: monospace; color: var(--main); }
-
-        header { @apply bg-gray-800 border-b-2 border-main text-white p-4; }
-        input { @apply w-full p-4 text-white bg-gray-900 border border-main rounded-lg; }
-        .filters { @apply flex flex-wrap justify-center gap-4 p-4; }
-        .btn { @apply bg-gray-700 border border-gray-500 text-gray-400 p-2 rounded-lg hover:border-main hover:text-main hover:shadow-md; }
-        .btn:hover { @apply border-main text-main; }
-        .grid { @apply grid grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4; }
-        .card { @apply bg-gray-900 p-4 rounded-lg border border-gray-700 hover:shadow-md; }
-        .card:hover { @apply transform translate-y-[-5px] border-main; }
-        .card h3 { @apply text-main; }
-        .dl-link { @apply inline-block mt-2 bg-main text-black p-2 rounded-lg; }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body>
-
-<div id="loader" class="text-4xl font-bold">SEARCHING GLOBAL ARCHIVES...</div>
-
-<header class="flex justify-center items-center">
-    <h1 class="text-4xl font-bold">مستودع الأنظمة والأدوات العالمي</h1>
-    <input type="text" id="searchInput" placeholder="ابحث عن أداة أو نظام (مثلاً: Termux, Scanner)...">
-</header>
-
-<div class="filters flex flex-wrap justify-center gap-4 p-4">
-    <button class="btn">Android</button>
-    <button class="btn">Python</button>
-    <button class="btn">Network</button>
-    <button class="btn">Security</button>
-    <button class="btn">Termux</button>
-    <button class="btn">Database</button>
-</div>
-
-<div class="grid" id="results"></div>
-
-<script>
-    // إخفاء الترحيب
-    window.onload = () => {
-        setTimeout(() => document.getElementById('loader').style.display = 'none', 1500);
-        fetchData('cybersecurity');
-    };
-
-    const API_URL = "https://api.github.com/search/repositories?q=";
-
-    async function fetchData(query) {
-        const container = document.getElementById('results');
-        container.innerHTML = "<p>جاري سحب البيانات من السيرفرات...</p>";
-        
-        try {
-            const res = await fetch(${API_URL}${encodeURIComponent(query)}+security&per_page=60);
-            const data = await res.json();
-            
-            container.innerHTML = "";
-            if (!data.items || data.items.length === 0) {
-                container.innerHTML = "<p>لا توجد نتائج لهذا البحث.</p>";
-                return;
-            }
-
-            data.items.forEach(repo => {
-                const zip = ${repo.html_url}/archive/refs/heads/${repo.default_branch}.zip;
-                container.innerHTML += 
-                    <div class="card">
-                        <h3>${repo.name}</h3>
-                        <p>${repo.description ? repo.description.substring(0, 100) : 'نظام برمجي متطور لخدمة الأمن الرقمي.'}...</p>
-                        <div style="font-size: 0.8em; color: #666;">Language: ${repo.language || 'Multi'}</div>
-                        <a href="${zip}" class="dl-link">📥 تحميل مباشر ZIP</a>
-                    </div>
-                ;
-            });
-        } catch (err) {
-            container.innerHTML = "<p>حدث خطأ في جلب البيانات.</p>";
-        }
-    }
-
-    // تشغيل البحث
-    document.getElementById('searchInput').onkeypress = (e) => {
-        if(e.key === 'Enter') fetchData(e.target.value);
-    };.
-</script>
+<body class="bg-gray-100">
+    <header class="bg-white shadow-md p-4">
+        <nav class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-lg font-bold text-gray-800">تطبيق ذكاء اصطناعي</a>
+            <ul class="flex items-center space-x-4">
+                <li><a href="#" class="text-gray-600 hover:text-gray-800">الرئيسية</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-gray-800">الخدمات</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-gray-800">التواصل</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container mx-auto p-4 mt-4">
+        <section class="bg-white shadow-md p-4 mb-4">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">تطبيق ذكاء اصطناعي</h2>
+            <p class="text-gray-600">تطبيق ذكاء اصطناعي يقوم بتحويل الأوامر النصية إلى مواقع ويب احترافية ومنشورة مباشرة على الإنترنت في ثوانٍ.</p>
+            <img src="https://picsum.photos/200/300" alt="تطبيق ذكاء اصطناعي" class="w-full h-64 object-cover mb-4">
+        </section>
+        <section class="bg-white shadow-md p-4 mb-4">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">المميزات</h2>
+            <ul class="list-disc ml-4">
+                <li>تحويل أوامر نصية إلى مواقع ويب احترافية</li>
+                <li>منشورة مباشرة على الإنترنت في ثوانٍ</li>
+                <li>تطبيق ذكاء اصطناعي متقدم</li>
+            </ul>
+        </section>
+        <section class="bg-white shadow-md p-4 mb-4">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">التواصل</h2>
+            <p class="text-gray-600">إذا كنت ترغب في التعرف على مزيد من المعلومات عن تطبيق ذكاء اصطناعي، يرجى التواصل معنا.</p>
+            <div class="flex items-center space-x-2">
+                <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fas fa-phone"></i> 0123456789</a>
+                <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fas fa-envelope"></i> info@example.com</a>
+                <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fas fa-map-marker-alt"></i> القاهرة، مصر</a>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-white shadow-md p-4">
+        <div class="container mx-auto text-center">
+            <p class="text-gray-600">&copy; 2023 تطبيق ذكاء اصطناعي. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
 </body>
 </html>
