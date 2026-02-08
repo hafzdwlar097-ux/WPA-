@@ -1,146 +1,555 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Total Fetcher</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>منصة أدوات GitHub</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #1a1a1a;
+            font-family: 'Cairo', sans-serif;
+            background-color: #2f2f2f;
             color: #fff;
-            font-family: 'Inter', sans-serif;
         }
-        .glassmorphism {
-            background-color: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 10px;
-            padding: 20px;
+        .nav-tabs {
+            border-bottom: 1px solid #333;
         }
-        .card {
-            background-color: #1a1a1a;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
+        .nav-tabs .nav-link {
+            color: #fff;
+            border-bottom: 2px solid transparent;
         }
-        .card-header {
+        .nav-tabs .nav-link.active {
+            color: #fff;
+            border-bottom: 2px solid #0f9d58;
+        }
+        .tool-card {
             background-color: #333;
-            padding: 10px;
-            border-bottom: 1px solid #555;
-        }
-        .card-body {
             padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
-        .favorite-btn {
-            background-color: #4CAF50;
+        .tool-card:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .clone-btn, .download-btn {
+            background-color: #0f9d58;
             color: #fff;
             border: none;
             padding: 10px 20px;
-            font-size: 16px;
+            border-radius: 5px;
             cursor: pointer;
         }
-        .favorite-btn:hover {
-            background-color: #3e8e41;
-        }
-        .favorite-btn:active {
-            background-color: #2e6e3f;
-        }
-        .favorite-btn:focus {
-            outline: none;
-        }
-        .favorite-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .favorite-list li {
-            padding: 10px;
-            border-bottom: 1px solid #555;
-        }
-        .favorite-list li:last-child {
-            border-bottom: none;
-        }
-        .favorite-list li:hover {
-            background-color: #333;
+        .clone-btn:hover, .download-btn:hover {
+            background-color: #0f9d58;
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
-    <header>
-        <nav class="flex justify-between items-center py-4">
-            <a href="#" class="text-3xl font-bold">Total Fetcher</a>
-            <ul class="flex items-center">
-                <li class="mr-4">
-                    <input type="text" placeholder="Search repositories" class="bg-transparent border border-gray-600 text-sm py-2 px-4 rounded focus:outline-none focus:border-blue-500">
-                </li>
-                <li class="mr-4">
-                    <button class="bg-transparent border border-gray-600 text-sm py-2 px-4 rounded focus:outline-none focus:border-blue-500">Search</button>
-                </li>
-                <li class="mr-4">
-                    <button class="bg-transparent border border-gray-600 text-sm py-2 px-4 rounded focus:outline-none focus:border-blue-500">Favorites</button>
-                </li>
-            </ul>
-        </nav>
-    </header>
-    <main class="container mx-auto p-4">
-        <h1 class="text-3xl font-bold mb-4">Repositories</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="card glassmorphism">
-                <div class="card-header">
-                    <h2 class="text-lg font-bold">Repository 1</h2>
-                </div>
-                <div class="card-body">
-                    <p>Programming language: Python</p>
-                    <p>Star rating: 1000</p>
-                    <p>Project size: 10MB</p>
-                    <p>Last update date: 2022-01-01</p>
-                    <button class="favorite-btn">Add to favorites</button>
-                </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">منصة أدوات GitHub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#" data-bs-toggle="tab" data-bs-target="#python">بايثون</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#android">أندرويد</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#hacking">القرصنة</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#networking">الشبكات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#web-security">أمان الويب</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#linux">لينكس</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#osint">OSINT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#cloud">سحاب</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#exploits">ثغرات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#apks">APK</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#global-tools">أدوات عالمية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#protection-systems">حماية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#termux">ترمكس</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#java">جافا</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="بحث" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">بحث</button>
+                </form>
             </div>
-            <div class="card glassmorphism">
-                <div class="card-header">
-                    <h2 class="text-lg font-bold">Repository 2</h2>
-                </div>
-                <div class="card-body">
-                    <p>Programming language: JavaScript</p>
-                    <p>Star rating: 500</p>
-                    <p>Project size: 5MB</p>
-                    <p>Last update date: 2022-02-01</p>
-                    <button class="favorite-btn">Add to favorites</button>
-                </div>
-            </div>
-            <div class="card glassmorphism">
-                <div class="card-header">
-                    <h2 class="text-lg font-bold">Repository 3</h2>
-                </div>
-                <div class="card-body">
-                    <p>Programming language: Java</p>
-                    <p>Star rating: 2000</p>
-                    <p>Project size: 20MB</p>
-                    <p>Last update date: 2022-03-01</p>
-                    <button class="favorite-btn">Add to favorites</button>
+        </div>
+    </nav>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="python">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة بايثون 1</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة بايثون 2</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة بايثون 3</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <h1 class="text-3xl font-bold mb-4">Favorite repositories</h1>
-        <ul class="favorite-list">
-            <li>Repository 1</li>
-            <li>Repository 2</li>
-            <li>Repository 3</li>
-        </ul>
-    </main>
+        <div class="tab-pane fade" id="android">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة أندرويد 1</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة أندرويد 2</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة أندرويد 3</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="hacking">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة قرصنة 1</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة قرصنة 2</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة قرصنة 3</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="networking">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة شبكات 1</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة شبكات 2</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة شبكات 3</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="web-security">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة أمان الويب 1</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة أمان الويب 2</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة أمان الويب 3</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="linux">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة لينكس 1</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة لينكس 2</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة لينكس 3</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="osint">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة OSINT 1</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة OSINT 2</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة OSINT 3</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="cloud">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة سحاب 1</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة سحاب 2</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة سحاب 3</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="exploits">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة ثغرات 1</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة ثغرات 2</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة ثغرات 3</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="apks">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة APK 1</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة APK 2</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة APK 3</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="global-tools">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة عالمية 1</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة عالمية 2</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة عالمية 3</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="protection-systems">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة حماية 1</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة حماية 2</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة حماية 3</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="termux">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة ترمكس 1</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة ترمكس 2</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة ترمكس 3</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="java">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة جافا 1</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة جافا 2</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="tool-card">
+                            <h5>أداة جافا 3</h5>
+                            <p>وصف الأداة</p>
+                            <button class="clone-btn">نسخ</button>
+                            <button class="download-btn">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const favoriteBtns = document.querySelectorAll('.favorite-btn');
-        const favoriteList = document.querySelector('.favorite-list');
-
-        favoriteBtns.forEach((btn) => {
-            btn.addEventListener('click', () => {
-                const repoName = btn.parentNode.querySelector('h2').textContent;
-                const favoriteItem = document.createElement('li');
-                favoriteItem.textContent = repoName;
-                favoriteList.appendChild(favoriteItem);
+        // Get all tab links
+        const tabLinks = document.querySelectorAll('.nav-link');
+        
+        // Add event listener to each tab link
+        tabLinks.forEach((link) => {
+            link.addEventListener('click', (e) => {
+                // Get the tab content ID
+                const tabContentId = link.getAttribute('data-bs-target');
+                
+                // Get the tab content element
+                const tabContent = document.querySelector(tabContentId);
+                
+                // Add active class to the tab link
+                link.classList.add('active');
+                
+                // Remove active class from other tab links
+                tabLinks.forEach((otherLink) => {
+                    if (otherLink !== link) {
+                        otherLink.classList.remove('active');
+                    }
+                });
             });
         });
     </script>
