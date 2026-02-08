@@ -2,65 +2,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tool explorer</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <div class="hero">
-        <div class="container">
-            <h1>Tool Explorer</h1>
-            <form>
-                <input type="search" id="search-input" placeholder="Search for a tool">
-                <button type="submit"><i class="fas fa-search"></i></button>
-            </form>
-        </div>
-    </div>
-
-    <div class="category-pills">
-        <div class="pill">
-            <a href="?termux">Termux</a>
-        </div>
-        <div class="pill">
-            <a href="?python">Python</a>
-        </div>
-        <div class="pill">
-            <a href="?ai">AI</a>
-        </div>
-    </div>
-
-    <?php
-
-        if isset($_GET["search"]) {
-            $search_term = $_GET["search"];
-            $url = "https://api.github.com/search/repositories?q=$search_term";
-        } elseif isset($_GET["termux"]) {
-            $url = "https://api.github.com/search/repositories?q=language:shell+topic:termux";
-        } elseif isset($_GET["python"]) {
-            $url = "https://api.github.com/search/repositories?q=language:python";
-        } elseif isset($_GET["ai"]) {
-            $url = "https://api.github.com/search/repositories?q=topic:AI";
-        } else {
-            $url = "https://api.github.com/search/repositories?q=stars:>=1000";
+    <title>Dark Tools Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* ظهور تأثير الزجاج الفاخر */
+        .glassmorphism {
+            background-color: #000000b3;
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
-
-        $response = file_get_contents($url);
-        $data = json_decode($response, true);
-
-        foreach ($data["items"] as $repository) {
-    ?>
-
-    <div class="card">
-        <h2><?= $repository["name"] ?></h2>
-        <p><i class="fas fa-star"></i> <?= $repository["stargazers_count"] ?></p>
-        <p><i class="fas fa-fork"></i> <?= $repository["forks_count"] ?></p>
-        <p><i class="fas fa-language"></i> <?= $repository["language"] ?></p>
-        <a href="<?= $repository["html_url"] ?>">View on GitHub</a>
+    </style>
+</head>
+<body class="p-4 md:p-6 lg:p-8 dark:p-4 md:dark:p-6 lg:dark:p-8">
+    <div class="glassmorphism max-w-lg mx-auto p-4 md:p-6 lg:p-8">
+        <h1 class="text-3xl font-bold mb-4 text-gray-200">Dark Tools Hub</h1>
+        <form class="mb-4 md:mb-6">
+            <input type="search" class="block p-2 w-full md:w-1/2 lg:w-1/3 xl:w-1/4 text-sm text-gray-400 focus:text-gray-600 focus:ring-gray-300" placeholder="Enter a GitHub username or repository">
+        </form>
+        <div class="bg-gray-800 rounded-b-2xl p-4">
+            <h2 class="text-2xl font-bold mb-4 text-gray-200">Results from GitHub</h2>
+            <div id="results" class="space-y-4 md:space-y-6 lg:space-y-8"></div>
+        </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@octokit/core@4.9.0/dist/core.min.js"></script>
+    <script>
+        const searchInput = document.querySelector('input[type="search"]');
+        const resultsContainer = document.getElementById('results');
 
-    <?php } ?>
+        searchInput.addEventListener('input', async () => {
+            const query = searchInput.value.trim();
+            if (query === '') return;
 
+            const octokit = new Octokit({
+                auth: 'YOUR_GITHUB_TOKEN', // Replace with your actual GitHub token
+            });
+
+            try {
+                const response = await octokit.rest.search.code({
+                    q: query,
+                });
+                const { data } = response;
+                const repositories = data.code_search_results.items;
+
+                resultsContainer.innerHTML = '';
+                repositories.forEach((repository) => {
+                    const repositoryHTML = `
+                        <div class="bg-gray-800 p-4 rounded-md">
+                            <h3 class="text-lg font-bold text-gray-200">${repository.name}</h3>
+                            <p class="text-gray-400">${repository.html_url}</p>
+                            <p class="text-gray-400">${repository.language}</p>
+                        </div>
+                    `;
+                    resultsContainer.insertAdjacentHTML('beforeend', repositoryHTML);
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    </script>
 </body>
 </html>
