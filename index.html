@@ -1,51 +1,158 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المنصة العالمية الشاملة</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>المنصة العالمية للأدوات المفتوحة المصدر</title>
+    <style>
+        body {
+            font-family: 'Roboto', monospace;
+            background-color: #0a0a0a;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            display: flex;
+            flex-direction: row;
+        }
+        .sidebar {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            width: 200px;
+            height: 600px;
+            overflow-y: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #00d4ff;
+        }
+        .sidebar a:hover {
+            color: #00ff41;
+        }
+        .main-content {
+            margin-left: 20px;
+            flex: 1;
+        }
+        .search-bar {
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .search-bar:focus {
+            outline: none;
+            border: 1px solid #00ff41;
+        }
+        .tool-card {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .tool-card h2 {
+            margin-top: 0;
+        }
+        .tool-card p {
+            margin-bottom: 10px;
+        }
+        .tool-card button {
+            background-color: #00ff41;
+            color: #0a0a0a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .tool-card button:hover {
+            background-color: #b537f2;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            .main-content {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav>
+    <div class="container">
+        <div class="sidebar">
             <ul>
-                <li><a href="#cyber-security">أمن السيبراني</a></li>
-                <li><a href="#ai-data-science">ذكاء اصطناعي وعلوم البيانات</a></li>
+                <li><a href="#" onclick="getTools('أنظمة مدمجة')">أنظمة مدمجة</a></li>
+                <li><a href="#" onclick="getTools('اتصالات')">اتصالات</a></li>
+                <li><a href="#" onclick="getTools('مراقبة')">مراقبة</a></li>
+                <li><a href="#" onclick="getTools('خصوصية')">خصوصية</a></li>
+                <li><a href="#" onclick="getTools('أدلة جنائية')">أدلة جنائية</a></li>
+                <li><a href="#" onclick="getTools('ويب')">ويب</a></li>
+                <li><a href="#" onclick="getTools('أندرويد')">أندرويد</a></li>
+                <li><a href="#" onclick="getTools('لينكس')">لينكس</a></li>
+                <li><a href="#" onclick="getTools('ترمكس')">ترمكس</a></li>
+                <li><a href="#" onclick="getTools('ذكاء اصطناعي')">ذكاء اصطناعي</a></li>
+                <li><a href="#" onclick="getTools('تشفير')">تشفير</a></li>
+                <li><a href="#" onclick="getTools('أتمتة')">أتمتة</a></li>
+                <li><a href="#" onclick="getTools('محاكاة')">محاكاة</a></li>
             </ul>
-        </nav>
-    </header>
-    <main>
-        <section id="cyber-security">
-            <h1>أمن السيبراني</h1>
-            <ul>
-                <li><a href="#linux">لينكس</a></li>
-                <li><a href="#termux">ترمكس</a></li>
-                <li><a href="#exploits">ثغرات</a></li>
-                <li><a href="#apk">APK</a></li>
-            </ul>
-            <div class="glassmorphism">
-                <h2>أدوات أمن السيبراني</h2>
-                <ul id="cyber-security-tools">
-                    <!-- سيتم ملء هذه القائمة تلقائياً بواسطة JavaScript -->
-                </ul>
-            </div>
-        </section>
-        <section id="ai-data-science">
-            <h1>ذكاء اصطناعي وعلوم البيانات</h1>
-            <ul>
-                <li><a href="#llms">LLMs</a></li>
-                <li><a href="#neural-networks">Neural Networks</a></li>
-                <li><a href="#ai-python">AI Python</a></li>
-            </ul>
-            <div class="glassmorphism">
-                <h2>أدوات ذكاء اصطناعي وعلوم البيانات</h2>
-                <ul id="ai-data-science-tools">
-                    <!-- سيتم ملء هذه القائمة تلقائياً بواسطة JavaScript -->
-                </ul>
-            </div>
-        </section>
-    </main>
-    <script src="script.js"></script>
+        </div>
+        <div class="main-content">
+            <input type="text" id="search-bar" class="search-bar" placeholder="بحث...">
+            <div id="tools-container"></div>
+        </div>
+    </div>
+    <script>
+        function getTools(category) {
+            fetch(`https://api.github.com/search/repositories?q=${category}`)
+                .then(response => response.json())
+                .then(data => {
+                    const toolsContainer = document.getElementById('tools-container');
+                    toolsContainer.innerHTML = '';
+                    data.items.forEach(tool => {
+                        const toolCard = document.createElement('div');
+                        toolCard.classList.add('tool-card');
+                        toolCard.innerHTML = `
+                            <h2>${tool.name}</h2>
+                            <p>${tool.description}</p>
+                            <p>عدد النجوم: ${tool.stargazers_count}</p>
+                            <button>نسخ Git Clone</button>
+                        `;
+                        toolsContainer.appendChild(toolCard);
+                    });
+                });
+        }
+        document.getElementById('search-bar').addEventListener('input', () => {
+            const searchBar = document.getElementById('search-bar');
+            const toolsContainer = document.getElementById('tools-container');
+            const searchValue = searchBar.value.toLowerCase();
+            const toolCards = toolsContainer.children;
+            for (let i = 0; i < toolCards.length; i++) {
+                const toolCard = toolCards[i];
+                const toolName = toolCard.children[0].textContent.toLowerCase();
+                if (toolName.includes(searchValue)) {
+                    toolCard.style.display = 'block';
+                } else {
+                    toolCard.style.display = 'none';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
