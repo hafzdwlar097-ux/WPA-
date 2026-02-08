@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub Search</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" integrity="sha512-dNRxM+iYl6UyIoT+hZpgJwN3SnGaef3BwyHSJ7V4qQFAjmFTAqJDevZHuLBcbszMUQPZFTMXheDjqRCDD2Jpw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcJyang8PKgEKGxnxHR9KwGzamfSSKcKNHPKJ3uRTdoHZuo+500NycqHGuKJTaXcg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <div class="container mx-auto p-4">
         <h1 class="text-3xl font-bold mb-4">GitHub Search</h1>
-        <input type="text" id="search-input" class="block p-2 w-full border border-gray-400 rounded mb-4" placeholder="Enter search query">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="fetchFromGithub(document.getElementById('search-input').value)">Search</button>
-        <div id="statusText" class="text-lg font-bold mb-4"></div>
+        <input type="text" id="search" class="w-full p-2 mb-4" placeholder="Search for a repository...">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="fetchFromGithub(document.getElementById('search').value)">Search</button>
+        <div id="statusText" class="text-gray-600 mb-4"></div>
         <div id="results" class="grid grid-cols-1 gap-4"></div>
     </div>
 
     <script>
+        // الدالة الرئيسية للجلب
         async function fetchFromGithub(query) {
             const container = document.getElementById('results');
             const status = document.getElementById('statusText');
@@ -70,8 +71,8 @@
             const cloneCmd = `git clone ${repo.html_url}`;
             const zipUrl = `${repo.html_url}/archive/refs/heads/master.zip`;
 
-            const cardHTML = `
-                <div class="repo-card">
+            const cardHTML = 
+                `<div class="repo-card">
                     <div class="repo-header">
                         <span class="repo-title">${repo.name}</span>
                         <span class="repo-stars">⭐ ${(repo.stargazers_count/1000).toFixed(1)}k</span>
@@ -95,10 +96,17 @@
                             عرض المصدر على GitHub <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
-                </div>
-            `;
+                </div>`;
             
             container.insertAdjacentHTML('beforeend', cardHTML);
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('تم النسخ بنجاح!');
+            }).catch(error => {
+                alert('حدث خطأ أثناء النسخ!');
+            });
         }
     </script>
 </body>
