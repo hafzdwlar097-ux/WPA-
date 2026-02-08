@@ -2,112 +2,147 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Search</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" integrity="sha512-dNRxM+iYl6UyIoT+hZpgJwN3SnGaef3BwyHSJ7V4qQFAjmFTAqJDevZHuLBcbszMUQPZFTMXheDjqRCDD2Jpw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcJyang8PKgEKGxnxHR9KwGzamfSSKcKNHPKJ3uRTdoHZuo+500NycqHGuKJTaXcg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Total Fetcher</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+        .glassmorphism {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .card {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background-color: #333;
+            padding: 10px;
+            border-bottom: 1px solid #555;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .favorite-btn {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .favorite-btn:hover {
+            background-color: #3e8e41;
+        }
+        .favorite-btn:active {
+            background-color: #2e6e3f;
+        }
+        .favorite-btn:focus {
+            outline: none;
+        }
+        .favorite-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .favorite-list li {
+            padding: 10px;
+            border-bottom: 1px solid #555;
+        }
+        .favorite-list li:last-child {
+            border-bottom: none;
+        }
+        .favorite-list li:hover {
+            background-color: #333;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mx-auto p-4">
-        <h1 class="text-3xl font-bold mb-4">GitHub Search</h1>
-        <input type="text" id="search" class="w-full p-2 mb-4" placeholder="Search for a repository...">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="fetchFromGithub(document.getElementById('search').value)">Search</button>
-        <div id="statusText" class="text-gray-600 mb-4"></div>
-        <div id="results" class="grid grid-cols-1 gap-4"></div>
-    </div>
-
+    <header>
+        <nav class="flex justify-between items-center py-4">
+            <a href="#" class="text-3xl font-bold">Total Fetcher</a>
+            <ul class="flex items-center">
+                <li class="mr-4">
+                    <input type="text" placeholder="Search repositories" class="bg-transparent border border-gray-600 text-sm py-2 px-4 rounded focus:outline-none focus:border-blue-500">
+                </li>
+                <li class="mr-4">
+                    <button class="bg-transparent border border-gray-600 text-sm py-2 px-4 rounded focus:outline-none focus:border-blue-500">Search</button>
+                </li>
+                <li class="mr-4">
+                    <button class="bg-transparent border border-gray-600 text-sm py-2 px-4 rounded focus:outline-none focus:border-blue-500">Favorites</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-4">Repositories</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="card glassmorphism">
+                <div class="card-header">
+                    <h2 class="text-lg font-bold">Repository 1</h2>
+                </div>
+                <div class="card-body">
+                    <p>Programming language: Python</p>
+                    <p>Star rating: 1000</p>
+                    <p>Project size: 10MB</p>
+                    <p>Last update date: 2022-01-01</p>
+                    <button class="favorite-btn">Add to favorites</button>
+                </div>
+            </div>
+            <div class="card glassmorphism">
+                <div class="card-header">
+                    <h2 class="text-lg font-bold">Repository 2</h2>
+                </div>
+                <div class="card-body">
+                    <p>Programming language: JavaScript</p>
+                    <p>Star rating: 500</p>
+                    <p>Project size: 5MB</p>
+                    <p>Last update date: 2022-02-01</p>
+                    <button class="favorite-btn">Add to favorites</button>
+                </div>
+            </div>
+            <div class="card glassmorphism">
+                <div class="card-header">
+                    <h2 class="text-lg font-bold">Repository 3</h2>
+                </div>
+                <div class="card-body">
+                    <p>Programming language: Java</p>
+                    <p>Star rating: 2000</p>
+                    <p>Project size: 20MB</p>
+                    <p>Last update date: 2022-03-01</p>
+                    <button class="favorite-btn">Add to favorites</button>
+                </div>
+            </div>
+        </div>
+        <h1 class="text-3xl font-bold mb-4">Favorite repositories</h1>
+        <ul class="favorite-list">
+            <li>Repository 1</li>
+            <li>Repository 2</li>
+            <li>Repository 3</li>
+        </ul>
+    </main>
     <script>
-        // الدالة الرئيسية للجلب
-        async function fetchFromGithub(query) {
-            const container = document.getElementById('results');
-            const status = document.getElementById('statusText');
-            
-            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> جاري سحب البيانات من السيرفرات...</div>';
-            
-            try {
-                // استخدام API GitHub العام
-                // sort=stars: لجلب الأدوات الأكثر شهرة وموثوقية
-                const url = `https://api.github.com/search/repositories?q=${query}&sort=stars&order=desc&per_page=40`;
-                
-                const response = await fetch(url);
-                
-                // التعامل مع الأخطاء (مثل الحظر المؤقت)
-                if (response.status === 403) {
-                    throw new Error("⚠️ تم تجاوز حد البحث المسموح به لليوم. حاول مرة أخرى لاحقاً أو استخدم VPN.");
-                }
-                if (!response.ok) {
-                    throw new Error("حدث خطأ في الاتصال بالسيرفر.");
-                }
+        const favoriteBtns = document.querySelectorAll('.favorite-btn');
+        const favoriteList = document.querySelector('.favorite-list');
 
-                const data = await response.json();
-                
-                // تحديث الواجهة
-                status.innerText = `تم العثور على ${data.total_count} أداة (يتم عرض أفضل 40)`;
-                container.innerHTML = ""; // مسح التحميل
-
-                if (data.items.length === 0) {
-                    container.innerHTML = "<p style='text-align:center'>لم يتم العثور على أدوات مطابقة.</p>";
-                    return;
-                }
-
-                // رسم الكروت
-                data.items.forEach(repo => {
-                    createCard(repo, container);
-                });
-
-            } catch (error) {
-                container.innerHTML = '<div style="text-align:center; color:red; width:100%"><h3>🚫 توقف النظام</h3><p>' + error.message + '</p></div>';
-            }
-        }
-
-        function createCard(repo, container) {
-            // تجهيز البيانات
-            const desc = repo.description ? repo.description.slice(0, 100) + '...' : 'لا يوجد وصف متاح';
-            const lang = repo.language || 'Code';
-            const size = (repo.size / 1024).toFixed(1) + ' MB';
-            const date = new Date(repo.updated_at).toLocaleDateString();
-
-            // تجهيز الأوامر
-            const cloneCmd = `git clone ${repo.html_url}`;
-            const zipUrl = `${repo.html_url}/archive/refs/heads/master.zip`;
-
-            const cardHTML = 
-                `<div class="repo-card">
-                    <div class="repo-header">
-                        <span class="repo-title">${repo.name}</span>
-                        <span class="repo-stars">⭐ ${(repo.stargazers_count/1000).toFixed(1)}k</span>
-                    </div>
-                    
-                    <div class="repo-meta">
-                        <span class="lang-badge">${lang}</span>
-                        <span>📅 ${date}</span>
-                    </div>
-
-                    <p class="repo-desc">${desc}</p>
-
-                    <div class="actions">
-                        <button class="btn-action btn-git" onclick="copyText('${cloneCmd}')">
-                            <i class="fas fa-copy"></i> نسخ التثبيت
-                        </button>
-                        <a href="${zipUrl}" class="btn-action btn-zip">
-                            <i class="fas fa-download"></i> تحميل
-                        </a>
-                        <a href="${repo.html_url}" target="_blank" class="btn-action btn-view">
-                            عرض المصدر على GitHub <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </div>
-                </div>`;
-            
-            container.insertAdjacentHTML('beforeend', cardHTML);
-        }
-
-        function copyText(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('تم النسخ بنجاح!');
-            }).catch(error => {
-                alert('حدث خطأ أثناء النسخ!');
+        favoriteBtns.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const repoName = btn.parentNode.querySelector('h2').textContent;
+                const favoriteItem = document.createElement('li');
+                favoriteItem.textContent = repoName;
+                favoriteList.appendChild(favoriteItem);
             });
-        }
+        });
     </script>
 </body>
 </html>
