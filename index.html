@@ -2,197 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>غithub tools hub</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #151515;
-            color: #fff;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .glassmorphism {
-            background: linear-gradient(135deg, #000, #333);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-        .search-bar {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 10px;
-            background-color: #333;
-            color: #fff;
-        }
-        .search-btn {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-        .search-btn:hover {
-            background-color: #444;
-        }
-        .category-btns {
-            margin-top: 20px;
-            display: flex;
-            gap: 20px;
-        }
-        .category-btn {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-        .card {
-            background-color: #444;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-    </style>
+    <title>tool explorer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="glassmorphism">
-        <h1 class="text-3xl text-center">غithub tools hub</h1>
-        <form>
-            <input type="text" class="search-bar" id="search-input" placeholder="ابحث عن مستودع...">
-            <button class="search-btn" id="search-btn">بحث</button>
-        </form>
-        <div class="category-btns">
-            <button class="category-btn" id="termux-btn">Termux</button>
-            <button class="category-btn" id="python-btn">Python</button>
-            <button class="category-btn" id="apks-btn">APKs</button>
+
+    <div class="hero">
+        <div class="container">
+            <h1>Tool Explorer</h1>
+            <form>
+                <input type="search" id="search-input" placeholder="Search for a tool">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
         </div>
-        <div id="results" class="results"></div>
     </div>
 
-    <script>
-        const searchInput = document.getElementById('search-input');
-        const searchBtn = document.getElementById('search-btn');
-        const resultsDiv = document.getElementById('results');
-        const termuxBtn = document.getElementById('termux-btn');
-        const pythonBtn = document.getElementById('python-btn');
-        const apksBtn = document.getElementById('apks-btn');
+    <div class="category-pills">
+        <div class="pill">
+            <a href="?termux">Termux</a>
+        </div>
+        <div class="pill">
+            <a href="?python">Python</a>
+        </div>
+        <div class="pill">
+            <a href="?ai">AI</a>
+        </div>
+    </div>
 
-        let searchQuery = '';
-        let category = '';
+    <?php
 
-        searchBtn.addEventListener('click', async () => {
-            searchQuery = searchInput.value;
-            resultsDiv.innerHTML = '';
-            category = '';
-            await fetch(`https://api.github.com/search/repositories?q=${searchQuery}`)
-                .then(response => response.json())
-                .then(data => {
-                    const repositories = data.items;
-                    repositories.forEach(repository => {
-                        const card = document.createElement('div');
-                        card.className = 'card';
-                        const name = document.createElement('h2');
-                        name.textContent = repository.name;
-                        const description = document.createElement('p');
-                        description.textContent = repository.description;
-                        const link = document.createElement('a');
-                        link.href = repository.html_url;
-                        link.textContent = 'رابط الملف';
-                        card.appendChild(name);
-                        card.appendChild(description);
-                        card.appendChild(link);
-                        resultsDiv.appendChild(card);
-                    });
-                });
-        });
+        if isset($_GET["search"]) {
+            $search_term = $_GET["search"];
+            $url = "https://api.github.com/search/repositories?q=$search_term";
+        } elseif isset($_GET["termux"]) {
+            $url = "https://api.github.com/search/repositories?q=language:shell+topic:termux";
+        } elseif isset($_GET["python"]) {
+            $url = "https://api.github.com/search/repositories?q=language:python";
+        } elseif isset($_GET["ai"]) {
+            $url = "https://api.github.com/search/repositories?q=topic:AI";
+        } else {
+            $url = "https://api.github.com/search/repositories?q=stars:>=1000";
+        }
 
-        termuxBtn.addEventListener('click', () => {
-            category = 'termux';
-            searchInput.value = '';
-            resultsDiv.innerHTML = '';
-            fetch(`https://api.github.com/search/repositories?q=termux language:java`)
-                .then(response => response.json())
-                .then(data => {
-                    const repositories = data.items;
-                    repositories.forEach(repository => {
-                        const card = document.createElement('div');
-                        card.className = 'card';
-                        const name = document.createElement('h2');
-                        name.textContent = repository.name;
-                        const description = document.createElement('p');
-                        description.textContent = repository.description;
-                        const link = document.createElement('a');
-                        link.href = repository.html_url;
-                        link.textContent = 'رابط الملف';
-                        card.appendChild(name);
-                        card.appendChild(description);
-                        card.appendChild(link);
-                        resultsDiv.appendChild(card);
-                    });
-                });
-        });
+        $response = file_get_contents($url);
+        $data = json_decode($response, true);
 
-        pythonBtn.addEventListener('click', () => {
-            category = 'python';
-            searchInput.value = '';
-            resultsDiv.innerHTML = '';
-            fetch(`https://api.github.com/search/repositories?q=python language:python`)
-                .then(response => response.json())
-                .then(data => {
-                    const repositories = data.items;
-                    repositories.forEach(repository => {
-                        const card = document.createElement('div');
-                        card.className = 'card';
-                        const name = document.createElement('h2');
-                        name.textContent = repository.name;
-                        const description = document.createElement('p');
-                        description.textContent = repository.description;
-                        const link = document.createElement('a');
-                        link.href = repository.html_url;
-                        link.textContent = 'رابط الملف';
-                        card.appendChild(name);
-                        card.appendChild(description);
-                        card.appendChild(link);
-                        resultsDiv.appendChild(card);
-                    });
-                });
-        });
+        foreach ($data["items"] as $repository) {
+    ?>
 
-        apksBtn.addEventListener('click', () => {
-            category = 'apks';
-            searchInput.value = '';
-            resultsDiv.innerHTML = '';
-            fetch(`https://api.github.com/search/repositories?q=apks`)
-                .then(response => response.json())
-                .then(data => {
-                    const repositories = data.items;
-                    repositories.forEach(repository => {
-                        const card = document.createElement('div');
-                        card.className = 'card';
-                        const name = document.createElement('h2');
-                        name.textContent = repository.name;
-                        const description = document.createElement('p');
-                        description.textContent = repository.description;
-                        const link = document.createElement('a');
-                        link.href = repository.html_url;
-                        link.textContent = 'رابط الملف';
-                        card.appendChild(name);
-                        card.appendChild(description);
-                        card.appendChild(link);
-                        resultsDiv.appendChild(card);
-                    });
-                });
-        });
-    </script>
+    <div class="card">
+        <h2><?= $repository["name"] ?></h2>
+        <p><i class="fas fa-star"></i> <?= $repository["stargazers_count"] ?></p>
+        <p><i class="fas fa-fork"></i> <?= $repository["forks_count"] ?></p>
+        <p><i class="fas fa-language"></i> <?= $repository["language"] ?></p>
+        <a href="<?= $repository["html_url"] ?>">View on GitHub</a>
+    </div>
+
+    <?php } ?>
+
 </body>
 </html>
